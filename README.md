@@ -4,6 +4,107 @@ An archetype Elide project using Spring Boot.
 
 [![Build Status](https://cd.screwdriver.cd/pipelines/7924/badge)](https://cd.screwdriver.cd/pipelines/7924)
 
+## Queries
+
+```
+PATCH http://localhost:8080/api/v1
+Content-Type: application/vnd.api+json; ext=jsonpatch
+```
+
+```json
+[
+    {
+        "op": "add",
+        "path": "/author",
+        "value": {
+            "type": "author",
+            "id": "7f14b0c3-d0ed-436c-9843-6bfbf7342df6",
+            "attributes": {
+                "name": "Ernest Hemingway"
+            }
+        }
+    },
+    {
+        "op": "add",
+        "path": "/book",
+        "value": {
+            "type": "book",
+            "id": "1",
+            "attributes": {
+                "title": "The Old Man and the Sea"
+            },
+            "relationships": {}
+        }
+    },
+    {
+        "op": "add",
+        "path": "/book",
+        "value": {
+            "type": "book",
+            "id": "2",
+            "attributes": {
+                "title": "For Whom the Bell Tolls"
+            },
+            "relationships": {}
+        }
+    },
+    {
+        "op": "add",
+        "path": "/author/7f14b0c3-d0ed-436c-9843-6bfbf7342df6/authorBooks",
+        "value": {
+            "type": "authorBook",
+            "id": "e2d0e822-d94d-4e36-a592-ef4f2af89f75",
+            "attributes": {},
+            "relationships": {
+                "book": {
+                    "data": {
+                        "type": "book",
+                        "id": "1"
+                    }
+                }
+            }
+        }
+    }
+]
+```
+
+```
+PATCH http://localhost:8080/api/v1
+Content-Type: application/vnd.api+json; ext=jsonpatch
+```
+
+```json
+[
+  {
+    "op": "add",
+    "path": "/author/1/authorBooks",
+    "value": {
+      "type": "authorBook",
+      "id": "bd71bc1a-dc41-4adb-bf17-610149429f68",
+      "attributes": {},
+      "relationships": {
+        "book": {
+          "data": {
+            "type": "book",
+            "id": "2"
+          }
+        }
+      }
+    }
+  },
+  {
+    "op": "remove",
+    "path": "/author/1/authorBooks",
+    "value": {
+      "type": "authorBook",
+      "id": "1",
+      "attributes": {},
+      "relationships": {}
+    }
+  }
+]
+```
+
 ## Background
 
 This project is the sample code for [Elide's Getting Started documentation](https://elide.io/pages/guide/01-start.html).

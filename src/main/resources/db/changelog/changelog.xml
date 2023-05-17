@@ -90,4 +90,34 @@
             ('com.example.repository','elide-core','2020-01-03', 14);
         </sql>
     </changeSet>
+    
+    <changeSet author="admin" id="1539122271">
+        <sql>
+    CREATE TABLE Author (
+       id BIGINT NOT NULL,
+       PRIMARY KEY (id),
+       name varchar(120)
+    );
+    
+    CREATE TABLE Book (
+       id BIGINT NOT NULL,
+       PRIMARY KEY (id),
+       title varchar(120)
+    );
+    
+    CREATE TABLE Author_Book (
+       id BIGINT NOT NULL,
+       author_id BIGINT NOT NULL,
+       book_id BIGINT NOT NULL,
+       PRIMARY KEY (id),
+       FOREIGN KEY (author_id) REFERENCES Author(id),
+       FOREIGN KEY (book_id) REFERENCES Book(id)
+    );
+    
+    CREATE SEQUENCE AUTHOR_ID_SEQ AS INTEGER START WITH 1;
+    
+    CREATE SEQUENCE AUTHOR_BOOK_ID_SEQ AS INTEGER START WITH 1;
+
+        </sql>
+    </changeSet>    
 </databaseChangeLog>
