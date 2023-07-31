@@ -22,7 +22,7 @@
         <jar.finalName>elide-spring-boot</jar.finalName>
         <java.version>17</java.version>
 
-        <elide.version>7.0.0-pr6</elide.version>
+        <elide.version>7.0.0-pr7-SNAPSHOT</elide.version>
 
         <springdoc.version>2.1.0</springdoc.version>
         <logback-access-spring-boot-starter.version>4.0.0</logback-access-spring-boot-starter.version>
@@ -35,6 +35,8 @@
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
 
         <native.build-args>-H:+PrintClassInitialization -H:+ReportExceptionStackTraces</native.build-args>
+        
+        <spring-boot.version>3.1.2</spring-boot.version>
     </properties>
 
     <dependencyManagement>
@@ -254,6 +256,35 @@
                     </buildArgs>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<configuration>
+					<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.liquibase.ext</groupId>
+						<artifactId>liquibase-hibernate6</artifactId>
+						<version>${liquibase.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-web</artifactId>
+						<version>${spring-boot.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-data-jpa</artifactId>
+						<version>${spring-boot.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-validation</artifactId>
+						<version>${spring-boot.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
         </plugins>
     </build>
 </project>

@@ -99,4 +99,11 @@
             ('com.example.repository','elide-core','2020-01-03', 14);
         </sql>
     </changeSet>
+    <changeSet author="admin" id="1539122271">
+		<sql>
+    CREATE TABLE artifactmaintainer (name VARCHAR(255) NOT NULL, CONSTRAINT artifactmaintainerPK PRIMARY KEY (name));
+
+    CREATE TABLE tags (name VARCHAR(255) NOT NULL, tags VARCHAR(255));
+		</sql>
+    </changeSet>
 </databaseChangeLog>
