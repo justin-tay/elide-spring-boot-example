@@ -11,6 +11,7 @@
     <description>Elide Spring Boot Example</description>
     <groupId>example</groupId>
     <version>1.0.0</version>
+    <packaging>${packaging.type}</packaging>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -22,7 +23,7 @@
         <jar.finalName>elide-spring-boot</jar.finalName>
         <java.version>17</java.version>
 
-        <elide.version>7.0.0-pr5</elide.version>
+        <elide.version>7.0.0-pr7-SNAPSHOT</elide.version>
 
         <springdoc.version>2.1.0</springdoc.version>
         <logback-access-spring-boot-starter.version>4.0.0</logback-access-spring-boot-starter.version>
@@ -186,9 +187,9 @@
         </dependency>
 
         <dependency>
-        	<groupId>org.springframework.boot</groupId>
-        	<artifactId>spring-boot-configuration-processor</artifactId>
-        	<optional>true</optional>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -236,4 +237,45 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>jar</id>
+            <activation>
+                <property>
+                    <name>packaging</name>
+                    <value>!war</value>
+                </property>
+            </activation>
+            <properties>
+                <packaging.type>jar</packaging.type>
+            </properties>
+        </profile>
+        <profile>
+            <id>war</id>
+            <activation>
+                <property>
+                    <name>packaging</name>
+                    <value>war</value>
+                </property>
+            </activation>
+            <properties>
+                <packaging.type>war</packaging.type>
+                <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>jakarta.servlet</groupId>
+                    <artifactId>jakarta.servlet-api</artifactId>
+                    <version>${jakarta.servlet-api.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-jetty</artifactId>
+                    <scope>provided</scope>
+                </dependency>                    
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
