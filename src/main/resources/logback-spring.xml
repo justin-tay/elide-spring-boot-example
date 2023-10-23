@@ -27,6 +27,7 @@
     <!-- Log Hibernate SQL Statements -->
     <logger name="org.hibernate.SQL" level="DEBUG" />
     <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" />
+    <logger name="org.hibernate.stat" level="DEBUG" />
 
     <!-- Log JPA Datastore HQL Statements -->
     <logger name="com.yahoo.elide.core.hibernate.hql.DefaultQueryLogger" level="DEBUG" />
