@@ -54,6 +54,12 @@ spring:
         dialect: 'org.hibernate.dialect.H2Dialect'
         '[default_batch_fetch_size]': 100
         '[use_scrollable_resultset]': true
+        '[cache.use_second_level_cache]': true
+        '[cache.use_query_cache]': true
+        '[cache.region.factory_class]': jcache
+        '[javax.cache.missing_cache_strategy]': create
+        '[javax.persistence.sharedCache.mode]': ENABLE_SELECTIVE
+        '[generate_statistics]': true
     hibernate:
       naming:
         physical-strategy: 'org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl'
