@@ -79,6 +79,7 @@
           search = `?${search}`
         }
       }
+      const csrfToken = ('; '+document.cookie).split(`; XSRF-TOKEN=`).pop().split(';')[0];
 
       const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf('/graphiql'));
       const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
@@ -88,7 +89,10 @@
         wsClient: graphqlWs.createClient({
           url: `${subscriptionUrl}${path}${search}`,
           lazy: false, // connect as soon as the page opens
-        })
+        }),
+        headers: {
+          'X-XSRF-TOKEN': csrfToken
+        }
       });
       const root = ReactDOM.createRoot(document.getElementById('graphiql'));
       root.render(

@@ -37,7 +37,12 @@ window.onload = function() {
     plugins: [
       SwaggerUIBundle.plugins.DownloadUrl
     ],
-    layout: "StandaloneLayout"
+    layout: "StandaloneLayout",
+    requestInterceptor: (request) => {
+      const csrfToken = ('; '+document.cookie).split(`; XSRF-TOKEN=`).pop().split(';')[0];
+      request.headers['X-XSRF-TOKEN'] = csrfToken;
+      return request;
+    }
   });
 
   //</editor-fold>

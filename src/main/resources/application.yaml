@@ -76,3 +76,5 @@ logging:
 springdoc:
   swagger-ui:
     tags-sorter: alpha
+    csrf:
+      enabled: true
