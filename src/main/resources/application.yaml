@@ -40,9 +40,6 @@ elide:
       enabled: true
       path: analytics
 spring:
-  threads:
-    virtual:
-      enabled: true
   cloud:
     refresh:
       enabled: false
