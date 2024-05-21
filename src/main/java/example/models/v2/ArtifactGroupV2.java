@@ -10,6 +10,7 @@ import com.yahoo.elide.annotation.Include;
 import com.yahoo.elide.graphql.subscriptions.annotations.Subscription;
 import com.yahoo.elide.graphql.subscriptions.annotations.SubscriptionField;
 
+import example.Description;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -27,5 +28,6 @@ public class ArtifactGroupV2 {
 
     @SubscriptionField
     @Column(name = "commonName")
+    @Description("The common name of the group")
     private String title = "";
 }

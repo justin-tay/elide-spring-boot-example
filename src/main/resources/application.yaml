@@ -6,7 +6,7 @@
 
 app:
   security:
-    origin: "*"
+    origin: "https://studio.apollographql.com"
 elide:
   json-api:
     enabled: true

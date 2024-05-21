@@ -7,6 +7,7 @@ package example.models.v1;
 
 import com.yahoo.elide.annotation.Include;
 
+import example.Description;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -22,6 +23,7 @@ public class ArtifactProductV1 {
     @Id
     private String name = "";
 
+    @Description("The common name of the product")
     private String commonName = "";
 
     private String description = "";
