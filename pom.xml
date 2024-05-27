@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version>
+        <version>3.3.0</version>
     </parent>
 
     <properties>
@@ -25,8 +25,8 @@
         <jar.finalName>elide-spring-boot</jar.finalName>
         <java.version>17</java.version>
 
-        <elide.version>7.0.4</elide.version>
-        <spring-framework.version>6.1.7</spring-framework.version>
+        <elide.version>7.0.5</elide.version>
+        <spring-framework.version>6.1.8</spring-framework.version>
 
         <springdoc.version>2.5.0</springdoc.version>
 <!--        <logback-access-spring-boot-starter.version>4.1.0</logback-access-spring-boot-starter.version>-->
