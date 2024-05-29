@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.0</version>
+        <version>3.3.1</version>
     </parent>
 
     <properties>
@@ -25,8 +25,7 @@
         <jar.finalName>elide-spring-boot</jar.finalName>
         <java.version>17</java.version>
 
-        <elide.version>7.0.5</elide.version>
-        <spring-framework.version>6.1.8</spring-framework.version>
+        <elide.version>7.1.0</elide.version>
 
         <springdoc.version>2.5.0</springdoc.version>
 <!--        <logback-access-spring-boot-starter.version>4.1.0</logback-access-spring-boot-starter.version>-->
@@ -36,13 +35,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>${spring-framework.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>com.yahoo.elide</groupId>
                 <artifactId>elide-bom</artifactId>

@@ -24,6 +24,7 @@ import org.eclipse.jetty.ee10.websocket.jakarta.common.messages.DecodedBinaryMes
 import org.eclipse.jetty.ee10.websocket.jakarta.common.messages.DecodedBinaryStreamMessageSink;
 import org.eclipse.jetty.ee10.websocket.jakarta.common.messages.DecodedTextMessageSink;
 import org.eclipse.jetty.ee10.websocket.jakarta.common.messages.DecodedTextStreamMessageSink;
+import org.eclipse.jetty.util.ClassMatcher;
 import org.eclipse.jetty.websocket.core.messages.PartialByteArrayMessageSink;
 import org.eclipse.jetty.websocket.core.messages.PartialByteBufferMessageSink;
 import org.eclipse.jetty.websocket.core.messages.PartialStringMessageSink;
@@ -35,6 +36,10 @@ import org.springframework.aot.hint.TypeReference;
 
 import io.netty.buffer.AbstractByteBufAllocator;
 import io.netty.buffer.AbstractReferenceCountedByteBuf;
+import liquibase.database.LiquibaseTableNamesFactory;
+import liquibase.parser.SqlParserFactory;
+import liquibase.report.ShowSummaryGeneratorFactory;
+import liquibase.ui.LoggerUIService;
 
 public class AppRuntimeHints implements RuntimeHintsRegistrar {
     @Override
@@ -120,7 +125,20 @@ public class AppRuntimeHints implements RuntimeHintsRegistrar {
         hints.reflection().registerType(PartialStringMessageSink.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
         hints.reflection().registerType(PartialByteBufferMessageSink.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
         hints.reflection().registerType(PartialByteArrayMessageSink.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
-        
 
+        /*
+         * @see https://github.com/oracle/graalvm-reachability-metadata/pull/495/files 
+         */
+        hints.reflection().registerType(ClassMatcher.ByPackageOrName.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
+        hints.reflection().registerType(ClassMatcher.ByLocationOrModule.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
+        
+        /*
+         * Liquibase
+         * @see https://github.com/oracle/graalvm-reachability-metadata/issues/431
+         */
+        hints.reflection().registerType(LoggerUIService.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
+        hints.reflection().registerType(SqlParserFactory.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
+        hints.reflection().registerType(LiquibaseTableNamesFactory.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
+        hints.reflection().registerType(ShowSummaryGeneratorFactory.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
     }
 }
