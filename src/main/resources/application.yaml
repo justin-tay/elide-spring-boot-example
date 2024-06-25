@@ -23,14 +23,14 @@ elide:
     enabled: true
     path: /doc
   async:
-    enabled: false
+    enabled: true
     thread-pool-size: 2
     cleanup:
       enabled: true
       query-max-run-time: 65s
       query-retention-duration: 7d
     export:
-      enabled: false
+      enabled: true
   aggregation-store:
     enabled: true
     default-dialect: h2
