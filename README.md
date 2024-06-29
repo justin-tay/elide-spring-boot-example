@@ -8,19 +8,33 @@ An archetype Elide project using Spring Boot.
 
 This project is the sample code for [Elide's Getting Started documentation](https://elide.io/pages/guide/v7/01-start.html).
 
-## Install
+## Quick Start
 
-To build and run:
+### Build and run
 
-1. mvn clean install
-2. java -jar target/elide-spring-boot-1.0.0.jar
-3. Browse http://localhost:8080/
+#### Java
 
-For API Versioning
-1. Browse http://localhost:8080/?path=/v1
-2. Browse http://localhost:8080/?path=/v2
+```shell
+mvn clean install
+java -jar target/elide-spring-boot-1.0.0.jar
+```
 
-Springdoc is accessible at http://localhost:8080/swagger-ui/index.html.
+#### Native
+
+[Getting Started with GraalVM](https://www.graalvm.org/latest/docs/getting-started/)
+
+```shell
+mvn clean -Pnative native:compile
+```
+
+### Explore
+
+| Description         | URL
+|---------------------|---------------------------------------------
+| API Default Version | http://localhost:8080/
+| API Version 1       | http://localhost:8080/?path=/v1
+| API Version 2       | http://localhost:8080/?path=/v2
+| Springdoc           | http://localhost:8080/swagger-ui/index.html
 
 ## Docker and Containerize
 
@@ -78,6 +92,89 @@ To containerize and run elide project locally
 ## Usage
 
 See [Elide's Getting Started documentation](https://elide.io/pages/guide/v7/01-start.html).
+
+## Queries
+
+### JSON API
+
+#### Atomic Operations
+
+```json
+{
+  "atomic:operations": [
+    {
+      "op": "add",
+      "href": "/group/com.yahoo.elide/products/elide-core/versions",
+      "data": {
+        "type": "version",
+        "id": "7.1.0",
+        "attributes": {
+          "createdAt": "2007-12-03T10:15Z"
+        }
+      }
+    }
+  ]
+}
+```
+
+### GraphQL
+
+#### Query
+
+```json
+query QueryGroup {
+  group {
+    edges {
+      node {
+        name
+        description
+        products {
+          edges {
+            node {
+              name
+              versions {
+                edges {
+                  node {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+#### Mutation
+
+```json
+mutation UpsertGroup {
+  group(
+    op: UPSERT
+    data: {name: "org.springframework.boot", description: "Spring Boot"}
+  ) {
+    edges {
+      node {
+        name
+        description
+      }
+    }
+  }
+}
+```
+#### Subscription
+
+```json
+subscription OnAddGroup {
+  group (topic: ADDED) {
+    name
+    description
+  }
+}
+```
 
 ## Contribute
 Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for information about how to get involved. We welcome issues, questions, and pull requests.
