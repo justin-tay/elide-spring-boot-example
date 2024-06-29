@@ -8,19 +8,33 @@ An archetype Elide project using Spring Boot.
 
 This project is the sample code for [Elide's Getting Started documentation](https://elide.io/pages/guide/v7/01-start.html).
 
-## Install
+## Quick Start
 
-To build and run:
+### Build and run
 
-1. mvn clean install
-2. java -jar target/elide-spring-boot-1.0.0.jar
-3. Browse http://localhost:8080/
+#### Java
 
-For API Versioning
-1. Browse http://localhost:8080/?path=/v1
-2. Browse http://localhost:8080/?path=/v2
+```shell
+mvn clean install
+java -jar target/elide-spring-boot-1.0.0.jar
+```
 
-Springdoc is accessible at http://localhost:8080/swagger-ui/index.html.
+#### Native
+
+[Getting Started with GraalVM](https://www.graalvm.org/latest/docs/getting-started/)
+
+```shell
+mvn clean -Pnative native:compile
+```
+
+### Explore
+
+| Description         | URL
+|---------------------|---------------------------------------------
+| API Default Version | http://localhost:8080/
+| API Version 1       | http://localhost:8080/?path=/v1
+| API Version 2       | http://localhost:8080/?path=/v2
+| Springdoc           | http://localhost:8080/swagger-ui/index.html
 
 ## Docker and Containerize
 
@@ -79,6 +93,276 @@ To containerize and run elide project locally
 
 See [Elide's Getting Started documentation](https://elide.io/pages/guide/v7/01-start.html).
 
+## Queries
+
+### JSON API
+
+#### Mutation
+
+`POST /group/{groupId}/products/{productId}/versions`
+
+|Variable      |Value
+|--------------|--------------------
+|`groupId`     |`com.yahoo.elide`
+|`productId`   |`elide-core`
+
+```json
+{
+  "data": {
+  "type": "version",
+  "id": "7.1.0",
+  "attributes": {
+    "createdAt": "2007-12-03T10:15Z"
+    }
+  }
+}
+```
+
+#### Atomic Operations
+
+`POST /operations`
+
+```json
+{
+  "atomic:operations": [
+    {
+      "op": "add",
+      "href": "/group/com.yahoo.elide/products/elide-core/versions",
+      "data": {
+        "type": "version",
+        "id": "7.1.0",
+        "attributes": {
+          "createdAt": "2007-12-03T10:15Z"
+        }
+      }
+    }
+  ]
+}
+```
+
+#### Async Query
+
+`POST /asyncQuery`
+
+```json
+{
+  "data": {
+    "type": "asyncQuery",
+    "id": "ba31ca4e-ed8f-4be0-a0f3-12088fa9263d",
+    "attributes": {
+      "query": "/group?sort=commonName&fields%5Bgroup%5D=commonName,description",
+      "queryType": "JSONAPI_V1_0",
+      "status": "QUEUED"
+    }
+  }
+}
+```
+
+#### Async Table Export
+
+`POST /tableExport`
+
+```json
+{
+  "data": {
+    "type": "tableExport",
+    "id": "ba31ca4e-ed8f-4be0-a0f3-12088fa9263f",
+    "attributes": {
+      "query": "/group?sort=commonName&fields%5Bgroup%5D=commonName,description",
+      "queryType": "JSONAPI_V1_0",
+      "status": "QUEUED",
+      "resultType": "CSV"
+    }
+  }
+}
+```
+
+
+### GraphQL
+
+#### Query
+
+```json
+query QueryGroup {
+  group {
+    edges {
+      node {
+        name
+        description
+        products {
+          edges {
+            node {
+              name
+              versions {
+                edges {
+                  node {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+#### Mutation
+
+```json
+mutation UpsertGroup {
+  group(
+    op: UPSERT
+    data: {name: "org.springframework.boot", description: "Spring Boot"}
+  ) {
+    edges {
+      node {
+        name
+        description
+      }
+    }
+  }
+}
+```
+#### Subscription
+
+```json
+subscription OnAddGroup {
+  group (topic: ADDED) {
+    name
+    description
+  }
+}
+```
+
+#### Async Query
+
+```json
+mutation {
+  asyncQuery(
+    op: UPSERT
+    data: {id: "bb31ca4e-ed8f-4be0-a0f3-12088fb9263e", query: "{\"query\":\"{ group { edges { node { name } } } }\",\"variables\":null}", queryType: GRAPHQL_V1_0, status: QUEUED}
+  ) {
+    edges {
+      node {
+        id
+        query
+        queryType
+        status
+        result {
+          completedOn
+          responseBody
+          contentLength
+          httpStatus
+          recordCount
+        }
+      }
+    }
+  }
+}
+```
+
+#### Async Table Export
+
+```json
+mutation {
+  tableExport(
+    op: UPSERT
+    data: {id: "bb31ca4e-ed8f-4be0-a0f3-12088fb9263d", query: "{\"query\":\"{ group { edges { node { name } } } }\",\"variables\":null}", queryType: GRAPHQL_V1_0, resultType: "CSV", status: QUEUED}
+  ) {
+    edges {
+      node {
+        id
+        query
+        queryType
+        resultType
+        status
+        result {
+          completedOn
+          url
+          message
+          httpStatus
+          recordCount
+        }
+      }
+    }
+  }
+}
+```
+
+## Dependencies
+
+This example uses the `elide-spring-boot-starter` which includes most of Elide's modules which may be excluded if not required.
+
+### Async
+
+This enables the async functionality to make `asyncQuery` and `tableExport` for both JSON-API and GraphQL.
+
+```xml
+<dependency>
+    <groupId>com.yahoo.elide</groupId>
+    <artifactId>elide-spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>com.yahoo.elide</groupId>
+            <artifactId>elide-async</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+### Aggregation Datastore
+
+This enables the functionality for defining analytic models. The example is at `resources/analytics/models/tables/artifactDownloads.hjson.`
+
+```xml
+<dependency>
+    <groupId>com.yahoo.elide</groupId>
+    <artifactId>elide-spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>com.yahoo.elide</groupId>
+            <artifactId>elide-datastore-aggregation</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+### GraphQL
+
+This enables the functionality for making GraphQL queries, mutations and subscriptions.
+
+```xml
+<dependency>
+    <groupId>com.yahoo.elide</groupId>
+    <artifactId>elide-spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>com.yahoo.elide</groupId>
+            <artifactId>elide-graphql</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+### Swagger
+
+This enables the functionality for exposing the JSON-API documentation using OpenAPI 3.
+
+```xml
+<dependency>
+    <groupId>com.yahoo.elide</groupId>
+    <artifactId>elide-spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>com.yahoo.elide</groupId>
+            <artifactId>elide-swagger</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
 ## Contribute
 Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for information about how to get involved. We welcome issues, questions, and pull requests.
 
