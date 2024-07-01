@@ -140,6 +140,44 @@ See [Elide's Getting Started documentation](https://elide.io/pages/guide/v7/01-s
 }
 ```
 
+#### Async Query
+
+`POST /asyncQuery`
+
+```json
+{
+  "data": {
+    "type": "asyncQuery",
+    "id": "ba31ca4e-ed8f-4be0-a0f3-12088fa9263d",
+    "attributes": {
+      "query": "/group?sort=commonName&fields%5Bgroup%5D=commonName,description",
+      "queryType": "JSONAPI_V1_0",
+      "status": "QUEUED"
+    }
+  }
+}
+```
+
+#### Async Table Export
+
+`POST /tableExport`
+
+```json
+{
+  "data": {
+    "type": "tableExport",
+    "id": "ba31ca4e-ed8f-4be0-a0f3-12088fa9263f",
+    "attributes": {
+      "query": "/group?sort=commonName&fields%5Bgroup%5D=commonName,description",
+      "queryType": "JSONAPI_V1_0",
+      "status": "QUEUED",
+      "resultType": "CSV"
+    }
+  }
+}
+```
+
+
 ### GraphQL
 
 #### Query
@@ -195,6 +233,61 @@ subscription OnAddGroup {
   group (topic: ADDED) {
     name
     description
+  }
+}
+```
+
+#### Async Query
+
+```json
+mutation {
+  asyncQuery(
+    op: UPSERT
+    data: {id: "bb31ca4e-ed8f-4be0-a0f3-12088fb9263e", query: "{\"query\":\"{ group { edges { node { name } } } }\",\"variables\":null}", queryType: GRAPHQL_V1_0, status: QUEUED}
+  ) {
+    edges {
+      node {
+        id
+        query
+        queryType
+        status
+        result {
+          completedOn
+          responseBody
+          contentLength
+          httpStatus
+          recordCount
+        }
+      }
+    }
+  }
+}
+```
+
+#### Async Table Export
+
+```json
+mutation {
+  tableExport(
+    op: UPSERT
+    data: {id: "bb31ca4e-ed8f-4be0-a0f3-12088fb9263d", query: "{\"query\":\"{ group { edges { node { name } } } }\",\"variables\":null}", queryType: GRAPHQL_V1_0, resultType: "CSV", status: QUEUED}
+  ) {
+    edges {
+      node {
+        id
+        query
+        queryType
+        resultType
+        status
+        result {
+          completedOn
+          url
+          message
+          httpStatus
+          recordCount
+        }
+      }
+    }
   }
 }
 ```
