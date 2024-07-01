@@ -6,9 +6,11 @@
 package example.models;
 
 import com.yahoo.elide.annotation.Include;
+import com.yahoo.elide.annotation.ReadPermission;
 import com.yahoo.elide.graphql.subscriptions.annotations.Subscription;
 import com.yahoo.elide.graphql.subscriptions.annotations.SubscriptionField;
 
+import example.security.AdminCheck;
 import lombok.Data;
 
 import jakarta.persistence.Entity;
@@ -23,6 +25,7 @@ import java.util.List;
 @Entity
 @Subscription
 @Data
+@ReadPermission(expression = AdminCheck.USER_IS_ADMIN)
 public class ArtifactGroup {
     @Id
     private String name = "";

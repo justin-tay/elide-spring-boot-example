@@ -11,11 +11,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import java.time.Duration;
 import java.util.Arrays;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -28,8 +31,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @EnableConfigurationProperties(SecurityConfigProperties.class)
 public class SecurityConfiguration {
+    @Bean
+    @ConditionalOnClass(BearerTokenAuthenticationToken.class)
+    SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
+        http.oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
+                .jwt(jwt -> jwt.jwkSetUri("http://localhost:8080/realms/master/protocol/openid-connect/certs")))
+                .cors(withDefaults())
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests.anyRequest().authenticated())
+                .csrf(csrf -> csrf.disable());
+        return http.build();
+    }
 
     @Bean
+    @ConditionalOnMissingBean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(withDefaults())
             .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))

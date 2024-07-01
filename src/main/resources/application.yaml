@@ -68,7 +68,7 @@ spring:
     broker-url: 'vm://embedded?broker.persistent=false,useShutdownHook=false'
     in-memory: true
 server:
-  port: 8080
+  port: 9000
 logging:
   file:
     path: /tmp
