@@ -97,7 +97,30 @@ See [Elide's Getting Started documentation](https://elide.io/pages/guide/v7/01-s
 
 ### JSON API
 
+#### Mutation
+
+`POST /group/{groupId}/products/{productId}/versions`
+
+|Variable      |Value
+|--------------|--------------------
+|`groupId`     |`com.yahoo.elide`
+|`productId`   |`elide-core`
+
+```json
+{
+  "data": {
+  "type": "version",
+  "id": "7.1.0",
+  "attributes": {
+    "createdAt": "2007-12-03T10:15Z"
+    }
+  }
+}
+```
+
 #### Atomic Operations
+
+`POST /operations`
 
 ```json
 {
@@ -176,6 +199,77 @@ subscription OnAddGroup {
 }
 ```
 
+## Dependencies
+
+This example uses the `elide-spring-boot-starter` which includes most of Elide's modules which may be excluded if not required.
+
+### Async
+
+This enables the async functionality to make `asyncQuery` and `tableExport` for both JSON-API and GraphQL.
+
+```xml
+<dependency>
+    <groupId>com.yahoo.elide</groupId>
+    <artifactId>elide-spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>com.yahoo.elide</groupId>
+            <artifactId>elide-async</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+### Aggregation Datastore
+
+This enables the functionality for defining analytic models. The example is at `resources/analytics/models/tables/artifactDownloads.hjson.`
+
+```xml
+<dependency>
+    <groupId>com.yahoo.elide</groupId>
+    <artifactId>elide-spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>com.yahoo.elide</groupId>
+            <artifactId>elide-datastore-aggregation</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+### GraphQL
+
+This enables the functionality for making GraphQL queries, mutations and subscriptions.
+
+```xml
+<dependency>
+    <groupId>com.yahoo.elide</groupId>
+    <artifactId>elide-spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>com.yahoo.elide</groupId>
+            <artifactId>elide-graphql</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+### Swagger
+
+This enables the functionality for exposing the JSON-API documentation using OpenAPI 3.
+
+```xml
+<dependency>
+    <groupId>com.yahoo.elide</groupId>
+    <artifactId>elide-spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>com.yahoo.elide</groupId>
+            <artifactId>elide-swagger</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
 ## Contribute
 Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for information about how to get involved. We welcome issues, questions, and pull requests.
 
