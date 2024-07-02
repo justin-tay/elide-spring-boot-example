@@ -32,7 +32,7 @@ elide:
     export:
       enabled: true
   aggregation-store:
-    enabled: true
+    enabled: false
     default-dialect: h2
     metadata-store:
       enabled: false

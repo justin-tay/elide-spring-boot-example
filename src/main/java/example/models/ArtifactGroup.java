@@ -6,9 +6,11 @@
 package example.models;
 
 import com.yahoo.elide.annotation.Include;
+import com.yahoo.elide.annotation.LifeCycleHookBinding;
 import com.yahoo.elide.graphql.subscriptions.annotations.Subscription;
 import com.yahoo.elide.graphql.subscriptions.annotations.SubscriptionField;
 
+import example.models.hooks.ArtifactGroupHook;
 import lombok.Data;
 
 import jakarta.persistence.Entity;
@@ -23,17 +25,20 @@ import java.util.List;
 @Entity
 @Subscription
 @Data
+@LifeCycleHookBinding(operation = LifeCycleHookBinding.Operation.UPDATE, phase = LifeCycleHookBinding.TransactionPhase.PRESECURITY, hook = ArtifactGroupHook.class)
+@LifeCycleHookBinding(operation = LifeCycleHookBinding.Operation.UPDATE, phase = LifeCycleHookBinding.TransactionPhase.PREFLUSH, hook = ArtifactGroupHook.class)
+@LifeCycleHookBinding(operation = LifeCycleHookBinding.Operation.UPDATE, phase = LifeCycleHookBinding.TransactionPhase.PRECOMMIT, hook = ArtifactGroupHook.class)
 public class ArtifactGroup {
-    @Id
-    private String name = "";
+	@Id
+	private String name = "";
 
-    @SubscriptionField
-    private String commonName = "";
+	@SubscriptionField
+	private String commonName = "";
 
-    @SubscriptionField
-    private String description = "";
+	@SubscriptionField
+	private String description = "";
 
-    @SubscriptionField
-    @OneToMany(mappedBy = "group")
-    private List<ArtifactProduct> products = new ArrayList<>();
+	@SubscriptionField
+	@OneToMany(mappedBy = "group")
+	private List<ArtifactProduct> products = new ArrayList<>();
 }
