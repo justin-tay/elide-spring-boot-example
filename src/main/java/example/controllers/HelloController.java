@@ -18,23 +18,23 @@ import lombok.Getter;
 @Tags(value = { @Tag(name = "hello", description = "Say hello.") })
 @RestController
 public class HelloController {
-	@Builder
-	@AllArgsConstructor
-	@Schema(title= "Hello", description = "The hello response.")
-	public static class HelloResource {
-		@Getter
-		private String text;
-		@Getter
-		private String language;
-	}
-	
-	@GetMapping(value = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses(
-			@ApiResponse(
-					responseCode = "200", 
-					content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
-					schema = @Schema(implementation = HelloResource.class))))
-	public ResponseEntity<HelloResource> hello() {
-		return ResponseEntity.ok(HelloResource.builder().text("Hello").language("English").build());
-	}
+    @Builder
+    @AllArgsConstructor
+    @Schema(title= "Hello", description = "The hello response.")
+    public static class HelloResource {
+        @Getter
+        private String text;
+        @Getter
+        private String language;
+    }
+
+    @GetMapping(value = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses(
+            @ApiResponse(
+                    responseCode = "200", 
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+                    schema = @Schema(implementation = HelloResource.class))))
+    public ResponseEntity<HelloResource> hello() {
+        return ResponseEntity.ok(HelloResource.builder().text("Hello").language("English").build());
+    }
 }
