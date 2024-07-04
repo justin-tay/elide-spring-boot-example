@@ -92,6 +92,15 @@ The sample configuration is in `OpenApiConfiguration` which takes into account E
 </dependency>
 ```
 
+### Native
+
+Elide supports being built into a GraalVM native image by supplying a feature, `yahoo.elide.core.graal.ElideFeature`, and its own native hints in it's libraries, ie. `native-image.properties`, `reflect-config.json` and `resource-config.json`.
+
+Further configuration is typically required, for instance to add project specific resources like `analytics/models/tables/artifactDownloads.hjson`, or for instance if the [GraalVM Reachability Metadata Repository](https://github.com/oracle/graalvm-reachability-metadata) does not contain updated metadata for newly released libraries.
+
+This project has configured additional hints using Spring Boot's `RuntimeHintsRegistrar` in `AppRuntimeHints`. This is configured on `App` using `@ImportRuntimeHints`.
+
+
 ## Docker and Containerize
 
 To containerize and run elide project locally
