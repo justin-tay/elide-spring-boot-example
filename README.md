@@ -36,6 +36,46 @@ mvn clean -Pnative native:compile
 | API Version 2       | http://localhost:8080/?path=/v2
 | Springdoc           | http://localhost:8080/swagger-ui/index.html
 
+## Customizing
+
+### DataStore
+
+This project demonstrates a simple custom `DataStore`, the `OperationDataStore`, that allows exposing operations that do not persist any data, for instance for sending an e-mail.
+
+This is done by creating a model, `Mail`, with a `LifeCycleHook` that performs the operation.
+
+This allows exposing the operations through both JSON API and GraphQL.
+
+#### JSON API
+
+`POST /mail`
+```json
+{
+  "data": {
+    "type": "mail",
+    "attributes": {
+      "from": "thomas",
+      "to": "henry",
+      "content": "Hello world"
+    }
+  }
+}
+```
+
+#### GraphQL
+
+```json
+mutation {
+  mail(op: UPSERT, data: {from: "thomas", to: "henry", content: "Hello world"}) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+}
+```
+
 ## Docker and Containerize
 
 To containerize and run elide project locally
