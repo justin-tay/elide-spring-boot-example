@@ -30,6 +30,24 @@ window.onload = function() {
     url: `${contextPath}/doc${path}${search}`,
     dom_id: '#swagger-ui',
     deepLinking: true,
+    // start csrf modifications    
+    requestInterceptor: (request) => {
+      const documentURL = new URL(document.URL);
+      const requestURL = new URL(request.url, document.location.origin);
+      const sameOrigin = (documentURL.protocol === requestURL.protocol && documentURL.host === requestURL.host);
+      if (sameOrigin) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; XSRF-TOKEN=`);
+        if (parts.length === 2) {
+          const token = parts.pop().split(';').shift();
+          if (token) {
+            request.headers['X-XSRF-TOKEN'] = token;
+          }
+        }
+      }
+      return request;
+    },
+    // end csrf modifications
     presets: [
       SwaggerUIBundle.presets.apis,
       SwaggerUIStandalonePreset
