@@ -64,7 +64,7 @@ This allows exposing the operations through both JSON API and GraphQL.
 
 #### GraphQL
 
-```json
+```graphql
 mutation {
   mail(op: UPSERT, data: {from: "thomas", to: "henry", content: "Hello world"}) {
     edges {
@@ -222,7 +222,7 @@ See [Elide's Getting Started documentation](https://elide.io/pages/guide/v7/01-s
 
 #### Query
 
-```json
+```graphql
 query QueryGroup {
   group {
     edges {
@@ -251,7 +251,7 @@ query QueryGroup {
 
 #### Mutation
 
-```json
+```graphql
 mutation UpsertGroup {
   group(
     op: UPSERT
@@ -268,7 +268,7 @@ mutation UpsertGroup {
 ```
 #### Subscription
 
-```json
+```graphql
 subscription OnAddGroup {
   group (topic: ADDED) {
     name
@@ -279,7 +279,7 @@ subscription OnAddGroup {
 
 #### Async Query
 
-```json
+```graphql
 mutation {
   asyncQuery(
     op: UPSERT
@@ -306,7 +306,7 @@ mutation {
 
 #### Async Table Export
 
-```json
+```graphql
 mutation {
   tableExport(
     op: UPSERT
