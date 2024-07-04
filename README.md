@@ -76,6 +76,22 @@ mutation {
 }
 ```
 
+### OpenAPI
+
+Elide will only generate the OpenAPI document for the models that are defined in its `EntityDictionary`.
+
+If a consolidated document is required, for instance for documenting a `@RestController` like the `HelloController` example then Elide offers integration with Springdoc which can be accessed at http://localhost:8080/swagger-ui/index.html.
+
+The sample configuration is in `OpenApiConfiguration` which takes into account Elide's API versioning functionality.
+
+```xml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>${springdoc.version}</version>
+</dependency>
+```
+
 ## Docker and Containerize
 
 To containerize and run elide project locally
