@@ -34,11 +34,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 /**
  * Security configuration.
  * <p>
- * @see SecurityConfigProperties
+ * @see AppSecurityProperties
  */
 @Configuration
 @EnableWebSecurity
-@EnableConfigurationProperties(SecurityConfigProperties.class)
+@EnableConfigurationProperties(AppSecurityProperties.class)
 public class SecurityConfiguration {
     /**
      * Default configuration where security is disabled.
@@ -78,13 +78,13 @@ public class SecurityConfiguration {
         }
 
         @Bean
-        UserDetailsService userDetailsService() {
+        UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
             UserDetails admin = User.withUsername("admin")
-                    .password(passwordEncoder().encode("admin"))
+                    .password(passwordEncoder.encode("adminpass"))
                     .roles("ADMIN", "USER")
                     .build();
             UserDetails user = User.withUsername("user")
-                    .password(passwordEncoder().encode("user"))
+                    .password(passwordEncoder.encode("userpass"))
                     .roles("USER")
                     .build();
             return new InMemoryUserDetailsManager(admin, user);
@@ -118,7 +118,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource(SecurityConfigProperties properties) {
+    CorsConfigurationSource corsConfigurationSource(AppSecurityProperties properties) {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(properties.getOrigin()));
         configuration.setAllowedMethods(List.of("*"));

@@ -12,6 +12,9 @@ import jakarta.validation.Validator;
 
 /**
  * {@link DataStore} for operations.
+ * <p>
+ * This fulfills the same function as Elide's NoopDataStore but uses a Jakarta
+ * Bean Validator to validate the entity.
  */
 public class OperationDataStore implements DataStore {
     private final Validator validator;

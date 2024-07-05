@@ -11,11 +11,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import lombok.Data;    
 
 /**
- * Security configuration properties.
+ * Configuration properties for application security.
  */
 @Data    
 @ConfigurationProperties(prefix = "app.security")
-public class SecurityConfigProperties {
+public class AppSecurityProperties {
     /**
      * Whether to enable security.
      */
