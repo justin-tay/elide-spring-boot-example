@@ -3,6 +3,7 @@ package example.models;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.yahoo.elide.annotation.CreatePermission;
 import com.yahoo.elide.annotation.DeletePermission;
 import com.yahoo.elide.annotation.Include;
 import com.yahoo.elide.annotation.LifeCycleHookBinding;
@@ -13,13 +14,15 @@ import com.yahoo.elide.annotation.UpdatePermission;
 import com.yahoo.elide.core.lifecycle.LifeCycleHook;
 import com.yahoo.elide.core.security.ChangeSpec;
 import com.yahoo.elide.core.security.RequestScope;
+import com.yahoo.elide.core.security.User;
 import com.yahoo.elide.core.security.checks.prefab.Role;
 
+import example.security.checks.AdminCheck;
+import example.services.MailService;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Mail model for performing the mail operation.
@@ -30,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Include(name = "mail", description = "Mail.", friendlyName = "Mail")
 @Data
+@CreatePermission(expression = AdminCheck.USER_IS_ADMIN)
 @ReadPermission(expression = Role.NONE_ROLE)
 @UpdatePermission(expression = Role.NONE_ROLE)
 @DeletePermission(expression = Role.NONE_ROLE)
@@ -50,16 +54,28 @@ public class Mail {
 
     private String replyTo = "";
 
-    @Slf4j
+    private String createdBy = "";
+
+    /**
+     * {@link LifeCycleHook} that performs the sending of the mail.
+     */
     public static class MailHook implements LifeCycleHook<Mail> {
+        private final MailService mailService;
+
+        public MailHook(MailService mailService) {
+            this.mailService = mailService;
+        }
+
         @Override
         public void execute(Operation operation, TransactionPhase phase, Mail elideEntity, RequestScope requestScope,
                 Optional<ChangeSpec> changes) {
             // Perform mailing
             UUID uuid = UUID.randomUUID();
             String id = uuid.toString();
-            log.info("Sending mail from {} to {} with content {} with id {}", elideEntity.getFrom(), elideEntity.getTo(), elideEntity.getContent(), id);
             elideEntity.setId(id);
+            User user = requestScope.getUser();
+            elideEntity.setCreatedBy(user.getName());
+            mailService.send(elideEntity);
         }
     }
 }
