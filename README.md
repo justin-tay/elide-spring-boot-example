@@ -40,9 +40,9 @@ mvn clean -Pnative native:compile
 
 ### DataStore
 
-This project demonstrates a simple custom `DataStore`, the `OperationDataStore`, that allows exposing operations that do not persist any data, for instance for sending an e-mail.
+This project demonstrates a simple custom `DataStore`, the `OperationDataStore`, that allows exposing operations that do not persist any data, for instance for sending an e-mail. This serves the same purpose as Elide's `NoopDataStore` but uses a Jakarta Bean Validator to validate the entity. This is registered in `ElideConfiguration` using a `DataStoreBuilderCustomizer`.
 
-This is done by creating a model, `Mail`, with a `LifeCycleHook` that performs the operation.
+The operation is implemented by creating a model, `Mail`, with a `LifeCycleHook` that performs the sending of the mail.
 
 This allows exposing the operations through both JSON API and GraphQL.
 
@@ -99,6 +99,33 @@ Elide supports being built into a GraalVM native image by supplying a feature, `
 Further configuration is typically required, for instance to add project specific resources like `analytics/models/tables/artifactDownloads.hjson`, or for instance if the [GraalVM Reachability Metadata Repository](https://github.com/oracle/graalvm-reachability-metadata) does not contain updated metadata for newly released libraries.
 
 This project has configured additional hints using Spring Boot's `RuntimeHintsRegistrar` in `AppRuntimeHints`. This is configured on `App` using `@ImportRuntimeHints`.
+
+### Security
+
+Elide integrates with Spring Security by having the `com.yahoo.elide.core.security.User` contain `org.springframework.security.core.Authentication` as the principal. This is accessed from `RequestScope.getUser()` or in security checks like `UserCheck`.
+
+By default this project does not enable security to make it easier to explore the API.
+
+This project does come with sample configuration in `SecurityConfiguration` for enabling form login security for Spring Security. This is not intended as a reference but for demonstration purposes only. This can be enabled by setting `app.security.enabled=true` in `application.yaml`.
+
+```yaml
+app:
+  security:
+    enabled: true
+```
+
+This enables form login with the following test users.
+
+|User      |Password       | Roles
+|----------|---------------|---------
+|`admin`   |`adminpass`    | `ROLE_ADMIN`, `ROLE_USER`
+|`user`    |`userpass`     | `ROLE_USER`
+
+As the session credentials are maintained in the `JSESSIONID` cookie. The sample configuration also enables Cross-Site Request Forgery (CSRF) protection using the [Cookie-to-header token](https://en.wikipedia.org/wiki/Cross-site_request_forgery#Cookie-to-header_token) mechanism that relies on proper configuration of Cross-Origin Resource Sharing (CORS) to prevent sending of custom headers. This means that Spring Security expects a `X-XSRF-TOKEN` header with the cookie value of `XSRF-TOKEN` for all methods except `GET`, `HEAD`, `TRACE` and `OPTIONS`. Failure to send the `X-XSRF-TOKEN` for `POST` or `PATCH` requests will result in a `403 Forbidden`.
+
+The sample Swagger UI and GraphiQL implementations in this project have been modified to support CSRF protection. This is enabled for Springdoc by setting `springdoc.swagger-ui.csrf.enabled=true`.
+
+A sample `UserCheck` is implemented in `AdminCheck` that just checks that the user has `ROLE_ADMIN`. This is applied to the `Mail` model when security is enabled.
 
 
 ## Docker and Containerize

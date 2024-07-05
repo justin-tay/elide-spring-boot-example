@@ -6,7 +6,7 @@
 
 app:
   security:
-    enabled: true
+    enabled: false
     origin: "*"
 elide:
   json-api:
