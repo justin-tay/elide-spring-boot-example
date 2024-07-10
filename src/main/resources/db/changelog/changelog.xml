@@ -6,6 +6,8 @@
        name varchar(255) NOT NULL,
        commonName varchar(255) DEFAULT NULL,
        description varchar(255) DEFAULT NULL,
+       createdOn timestamp NOT NULL,
+       createdBy varchar(255) NOT NULL,
        PRIMARY KEY (name)
     );
 
@@ -75,9 +77,12 @@
     </changeSet>
     <changeSet author="admin" id="1539122270">
         <sql>
-    INSERT INTO ArtifactGroup (name, commonName, description) VALUES
-       ('com.example.repository','Example Repository','The code for this project'),
-       ('com.yahoo.elide','Elide','The magical library powering this project');
+    INSERT INTO ArtifactGroup (name, commonName, description, createdOn, createdBy) VALUES
+       ('com.example.repository','Example Repository','The code for this project', '2020-02-01 00:00:00', 'user'),
+       ('com.yahoo.elide','Elide','The magical library powering this project', '2019-02-01 00:00:00', 'user'),
+       ('org.springframework.boot','Spring Boot','Spring Boot makes it easy to create stand-alone applications', '2022-02-05 00:00:00', 'user'),
+       ('org.springframework.security','Spring Security','Spring Security is a powerful and highly customizable authentication and access-control framework', '2019-02-01 00:00:00', 'user'),
+       ('org.springframework.cloud','Spring Cloud','Spring Cloud provides tools for developers to quickly build some of the common patterns in distributed systems', '2020-06-05 00:00:00', 'user');
 
     INSERT INTO ArtifactProduct (name, commonName, description, group_name) VALUES
        ('elide-core','Core','The guts of Elide','com.yahoo.elide'),
