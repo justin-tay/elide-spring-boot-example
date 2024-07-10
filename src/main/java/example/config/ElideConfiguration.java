@@ -22,7 +22,7 @@ public class ElideConfiguration {
     @Bean
     DataStoreBuilderCustomizer operationDataStoreBuilderCustomizer(Validator validator) {
         return builder -> {
-            builder.dataStore(new OperationDataStore(validator, Mail.class));
+//            builder.dataStore(new OperationDataStore(validator, Mail.class));
         };
     }
 }

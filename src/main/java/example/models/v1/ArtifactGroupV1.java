@@ -6,8 +6,8 @@
 package example.models.v1;
 
 import com.yahoo.elide.annotation.Include;
-import com.yahoo.elide.graphql.subscriptions.annotations.Subscription;
-import com.yahoo.elide.graphql.subscriptions.annotations.SubscriptionField;
+//import com.yahoo.elide.graphql.subscriptions.annotations.Subscription;
+//import com.yahoo.elide.graphql.subscriptions.annotations.SubscriptionField;
 
 import lombok.Data;
 
@@ -21,19 +21,19 @@ import java.util.List;
 @Include(name = "group", description = "Artifact group.", friendlyName = "GroupV1")
 @Table(name = "artifactgroup")
 @Entity
-@Subscription
+//@Subscription
 @Data
 public class ArtifactGroupV1 {
     @Id
     private String name = "";
 
-    @SubscriptionField
+//    @SubscriptionField
     private String commonName = "";
 
-    @SubscriptionField
+//    @SubscriptionField
     private String description = "";
 
-    @SubscriptionField
+//    @SubscriptionField
     @OneToMany(mappedBy = "group")
     private List<ArtifactProductV1> products = new ArrayList<>();
 }
