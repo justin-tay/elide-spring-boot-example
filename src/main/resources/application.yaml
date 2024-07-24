@@ -8,6 +8,10 @@ app:
   security:
     enabled: false
     origin: "*"
+    id-obfuscation:
+      enabled: true
+      password: yourPassword
+      salt: 5c0744940b5c369b
 elide:
   json-api:
     enabled: true

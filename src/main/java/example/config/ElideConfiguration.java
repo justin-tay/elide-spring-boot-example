@@ -3,11 +3,16 @@ package example.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.security.crypto.encrypt.AesBytesEncryptor;
 
+import com.yahoo.elide.core.security.obfuscation.IdObfuscator;
 import com.yahoo.elide.spring.datastore.config.DataStoreBuilderCustomizer;
+import com.yahoo.elide.spring.security.obfuscation.BytesEncryptorIdObfuscator;
 
 import example.datastore.OperationDataStore;
 import example.datastore.SpringDataDataStore;
@@ -24,6 +29,7 @@ import jakarta.validation.Validator;
  * Configuration for Elide.
  */
 @Configuration
+@EnableConfigurationProperties(AppSecurityProperties.class)
 public class ElideConfiguration {
     /**
      * Creates the {@link OperationDataStore}.
@@ -71,5 +77,22 @@ public class ElideConfiguration {
     @Bean
     CursorEncoder cursorEncoder() {
         return new JacksonCursorEncoder();
+    }
+
+    /**
+     * Configures a id obfuscator.
+     *
+     * For demonstration purposes.
+     * 
+     * @param securityConfigProperties the configuration
+     * @return the id obfuscator
+     */
+    @Bean
+    @ConditionalOnProperty(prefix = "app.security.id-obfuscation", name = "enabled", havingValue = "true")
+    IdObfuscator idObfuscator(AppSecurityProperties securityConfigProperties) {
+        String password = securityConfigProperties.getIdObfuscation().getPassword();
+        String salt = securityConfigProperties.getIdObfuscation().getSalt();
+        AesBytesEncryptor bytesEncryptor = new AesBytesEncryptor(password, salt);
+        return new BytesEncryptorIdObfuscator(bytesEncryptor);
     }
 }
