@@ -99,4 +99,20 @@
             ('com.example.repository','elide-core','2020-01-03', 14);
         </sql>
     </changeSet>
+    <changeSet author="admin" id="1539122271">
+        <sql>
+    CREATE SEQUENCE POST_SEQ;
+
+    CREATE TABLE Post (
+       id integer NOT NULL,
+       title varchar(255) NOT NULL,
+       content varchar(255) NOT NULL,
+       content_html varchar(255) NOT NULL,
+       parent_id integer,
+       PRIMARY KEY (id),
+       FOREIGN KEY (parent_id) REFERENCES Post(id)
+    );
+        </sql>
+    </changeSet>
+    
 </databaseChangeLog>

@@ -14,4 +14,21 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "app.security")
 public class SecurityConfigProperties {
     private String origin = "*";
+
+    /**
+     * For demonstration purposes.
+     */
+    @Data
+    public static class IdObfuscation {
+        /**
+         * Turns on/off id obfuscation.
+         */
+        private boolean enabled = false;
+
+        private String password = "";
+        
+        private String salt = "";
+    }
+
+    private IdObfuscation idObfuscation = new IdObfuscation();
 }
