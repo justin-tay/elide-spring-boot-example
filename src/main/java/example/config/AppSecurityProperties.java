@@ -25,4 +25,21 @@ public class AppSecurityProperties {
      * A list of origins for which cross-origin requests are allowed.
      */
     private String origin = "*";
+
+    /**
+     * For demonstration purposes.
+     */
+    @Data
+    public static class IdObfuscation {
+        /**
+         * Turns on/off id obfuscation.
+         */
+        private boolean enabled = false;
+
+        private String password = "";
+        
+        private String salt = "";
+    }
+
+    private IdObfuscation idObfuscation = new IdObfuscation();
 }
