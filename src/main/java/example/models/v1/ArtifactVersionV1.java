@@ -11,16 +11,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.util.Date;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+import java.time.OffsetDateTime;
 
 @Include(rootLevel = false, name = "version", description = "Artifact version.", friendlyName = "VersionV1")
 @Table(name = "artifactversion")
 @Entity
+@Data
 public class ArtifactVersionV1 {
     @Id
     private String name = "";
 
-    private Date createdAt = new Date();
+    @NotNull
+    private OffsetDateTime createdOn = OffsetDateTime.now();
 
     @ManyToOne
     private ArtifactProductV1 artifact;
