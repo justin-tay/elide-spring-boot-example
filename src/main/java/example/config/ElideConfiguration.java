@@ -20,8 +20,8 @@ import example.models.ArtifactGroupPage;
 import example.models.ArtifactGroupStream;
 import example.models.Mail;
 import example.repositories.ArtifactGroupRepository;
-import example.services.CursorEncoder;
-import example.services.JacksonCursorEncoder;
+import example.services.SpringDataCursorEncoder;
+import example.services.JacksonSpringDataCursorEncoder;
 import example.services.QueryService;
 import jakarta.validation.Validator;
 
@@ -50,7 +50,7 @@ public class ElideConfiguration {
      */
     @Bean
     DataStoreBuilderCustomizer springDataDataStoreBuilderCustomizer(QueryService queryService,
-            CursorEncoder cursorEncoder) {
+            SpringDataCursorEncoder cursorEncoder) {
         return builder -> {
             builder.dataStore(new SpringDataDataStore(queryService, cursorEncoder));
         };
@@ -70,13 +70,13 @@ public class ElideConfiguration {
     }
 
     /**
-     * Creates the {@link CursorEncoder}.
+     * Creates the {@link SpringDataCursorEncoder}.
      * 
      * @return the cursor encoder
      */
     @Bean
-    CursorEncoder cursorEncoder() {
-        return new JacksonCursorEncoder();
+    SpringDataCursorEncoder springDataCursorEncoder() {
+        return new JacksonSpringDataCursorEncoder();
     }
 
     /**

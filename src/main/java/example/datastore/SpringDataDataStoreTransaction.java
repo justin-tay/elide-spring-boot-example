@@ -31,7 +31,7 @@ import com.yahoo.elide.core.request.Pagination.Direction;
 import com.yahoo.elide.core.request.Sorting;
 import com.yahoo.elide.core.request.Sorting.SortOrder;
 
-import example.services.CursorEncoder;
+import example.services.SpringDataCursorEncoder;
 import example.services.QueryService;
 
 /**
@@ -41,9 +41,9 @@ import example.services.QueryService;
  */
 public class SpringDataDataStoreTransaction implements DataStoreTransaction {
     private final QueryService queryService;
-    private final CursorEncoder cursorEncoder;
+    private final SpringDataCursorEncoder cursorEncoder;
 
-    public SpringDataDataStoreTransaction(QueryService queryService, CursorEncoder cursorEncoder) {
+    public SpringDataDataStoreTransaction(QueryService queryService, SpringDataCursorEncoder cursorEncoder) {
         this.queryService = queryService;
         this.cursorEncoder = cursorEncoder;
     }
