@@ -40,13 +40,15 @@ mvn clean -Pnative native:compile
 
 ### DataStore
 
-This project demonstrates a simple custom `DataStore`, the `OperationDataStore`, that allows exposing operations that do not persist any data, for instance for sending an e-mail. This serves the same purpose as Elide's `NoopDataStore` but uses a Jakarta Bean Validator to validate the entity. This is registered in `ElideConfiguration` using a `DataStoreBuilderCustomizer`.
+#### Performing operations / actions
+
+This project demonstrates a simple custom `DataStore`, the `OperationDataStore`, that allows exposing operations / actions that do not persist any data, for instance for sending an e-mail. This serves the same purpose as Elide's `NoopDataStore` but uses a Jakarta Bean Validator to validate the entity. This is registered in `ElideConfiguration` using a `DataStoreBuilderCustomizer`.
 
 The operation is implemented by creating a model, `Mail`, with a `LifeCycleHook` that performs the sending of the mail.
 
 This allows exposing the operations through both JSON API and GraphQL.
 
-#### JSON API
+##### JSON API
 
 `POST /mail`
 ```json
@@ -62,7 +64,7 @@ This allows exposing the operations through both JSON API and GraphQL.
 }
 ```
 
-#### GraphQL
+##### GraphQL
 
 ```graphql
 mutation {
@@ -75,6 +77,86 @@ mutation {
   }
 }
 ```
+
+#### Integrating with other libraries
+
+The project demonstrates a custom `DataStore`, the `SpringDataDataStore`, that demonstrates how to integrate Elide with other libraries such as Spring Data.
+
+This defines a `QueryRepository` interface that uses the `JpaSpecificationExecutor`. Implementations of `QueryRepository` such as `ArtifactGroupRepository` will then be registered to the `QueryService` which is used by the `SrpginDataDataStore` the retrieve data.
+
+Two resources, the `ArtifactGroupPage` which exposes offset pagination, and the `ArtifactGroupStream` which exposes cursor pagination, are using the `SpringDataDataStore`.
+
+##### JSON API
+
+Offset Pagination
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8080/api/groupPage?page%5Bsize%5D=2&page%5Btotals%5D=true' \
+  -H 'accept: application/vnd.api+json'
+```
+
+
+Cursor Pagination
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8080/api/groupStream?page%5Bfirst%5D=2&page%5Btotals%5D=true' \
+  -H 'accept: application/vnd.api+json'
+```
+
+
+##### GraphQL
+
+Offset Pagination
+
+As the pagination arguments in GraphQL for offset pagination and cursor pagination are the same, `after: 0` is used to hint that offset pagination is requested.
+
+```graphql
+query {
+  groupPage (first: 2 after: 0) {
+    edges {
+      node {
+        name
+        commonName
+        description
+      }
+    }
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+      totalRecords
+    }
+  }
+}
+```
+
+Cursor Pagination
+
+```graphql
+query {
+  groupStream (first: 2) {
+    edges {
+      node {
+        name
+        commonName
+        description
+      }
+    }
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+      totalRecords
+    }
+  }
+}
+```
+
+
+
+
 
 ### OpenAPI
 
@@ -102,7 +184,9 @@ This project has configured additional hints using Spring Boot's `RuntimeHintsRe
 
 ### Security
 
-Elide integrates with Spring Security by having the `com.yahoo.elide.core.security.User` contain `org.springframework.security.core.Authentication` as the principal. This is accessed from `RequestScope.getUser()` or in security checks like `UserCheck`.
+Elide integrates with Spring Security by using the `com.yahoo.elide.spring.security.HttpServletRequestUser` implementation of `com.yahoo.elide.core.security.User`. Using the `HttpServletRequest` also allows integration with the security provided by the container or custom schemes where a filter is used to wrap the `HttpServletRequest`.
+
+When Spring Security is used it will by default wrap the `HttpServletRequest` using the `org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper` which will return Spring's `org.springframework.security.core.Authentication` as the principal via `getUserPrincipal()` and delegate accordingly when `isUserInRole()` is called. contain. This is accessed from `RequestScope.getUser()` or in security checks like `UserCheck`.
 
 By default this project does not enable security to make it easier to explore the API.
 
@@ -127,8 +211,28 @@ The sample Swagger UI and GraphiQL implementations in this project have been mod
 
 A sample `UserCheck` is implemented in `AdminCheck` that just checks that the user has `ROLE_ADMIN`. This is applied to the `Mail` model when security is enabled.
 
+### ID Obfuscation
 
-## Docker and Containerize
+#### ID Obfuscator
+
+This project has a `Note` resource which uses a sequence as the primary key to demonstrate using a ID Obfuscator. This uses the `org.springframework.security.crypto.encrypt.AesBytesEncryptor`.
+
+```yaml
+app:
+  security:
+    id-obfuscation:
+      enabled: true
+      password: yourPassword
+      salt: 5c0744940b5c369b
+```
+
+#### Entity ID
+
+This project has a `Post` resource which uses a sequence as the primary key to demonstrate using a Entity ID which stores a UUID.
+
+## Deploying
+
+### Docker and Containerize
 
 To containerize and run elide project locally
 
@@ -160,8 +264,7 @@ To containerize and run elide project locally
    ```
     docker exec -it 99998a35d377 /bin/sh
    ```
-# Run from cloud (AWS)
-
+### Run from cloud (AWS)
 
 1. ECR 
    1. Create a repository in Elastic Container Registry with name elide-spring-boot-example
@@ -186,6 +289,8 @@ To containerize and run elide project locally
 See [Elide's Getting Started documentation](https://elide.io/pages/guide/v7/01-start.html).
 
 ## Queries
+
+The following are sample queries.
 
 ### JSON API
 

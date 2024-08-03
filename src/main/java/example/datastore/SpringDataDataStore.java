@@ -4,7 +4,7 @@ import com.yahoo.elide.core.datastore.DataStore;
 import com.yahoo.elide.core.datastore.DataStoreTransaction;
 import com.yahoo.elide.core.dictionary.EntityDictionary;
 
-import example.services.CursorEncoder;
+import example.services.SpringDataCursorEncoder;
 import example.services.QueryService;
 
 /**
@@ -14,9 +14,9 @@ import example.services.QueryService;
  */
 public class SpringDataDataStore implements DataStore {
     private QueryService queryByCursorService;
-    private CursorEncoder cursorEncoder;
+    private SpringDataCursorEncoder cursorEncoder;
 
-    public SpringDataDataStore(QueryService queryByCursorService, CursorEncoder cursorEncoder) {
+    public SpringDataDataStore(QueryService queryByCursorService, SpringDataCursorEncoder cursorEncoder) {
         this.queryByCursorService = queryByCursorService;
         this.cursorEncoder = cursorEncoder;
     }

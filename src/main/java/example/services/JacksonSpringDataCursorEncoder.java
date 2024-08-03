@@ -12,20 +12,20 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * {@link CursorEncoder} using Jackson.
+ * {@link SpringDataCursorEncoder} using Jackson.
  */
-public class JacksonCursorEncoder implements CursorEncoder {
+public class JacksonSpringDataCursorEncoder implements SpringDataCursorEncoder {
     private static class Holder {
         private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     }
 
     private final ObjectMapper objectMapper;
 
-    public JacksonCursorEncoder() {
+    public JacksonSpringDataCursorEncoder() {
         this(Holder.OBJECT_MAPPER);
     }
 
-    public JacksonCursorEncoder(ObjectMapper objectMapper) {
+    public JacksonSpringDataCursorEncoder(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 

@@ -3,9 +3,9 @@ package example.services;
 import java.util.Map;
 
 /**
- * Cursor encoder.
+ * Cursor encoder for Spring Data.
  */
-public interface CursorEncoder {
+public interface SpringDataCursorEncoder {
     /**
      * Encode the cursor.
      * 
