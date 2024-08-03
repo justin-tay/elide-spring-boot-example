@@ -27,6 +27,7 @@ elide:
   api-docs:
     enabled: true
     path: /doc
+    version: openapi-3-1
   async:
     enabled: true
     thread-pool-size: 2
