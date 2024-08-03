@@ -1,6 +1,6 @@
 /*
  * Source code adapted from:
- * https://github.com/swagger-api/swagger-ui/blob/v5.1.3/dist/swagger-initializer.js
+ * https://github.com/swagger-api/swagger-ui/blob/v5.17.14/dist/swagger-initializer.js
  */
 
 window.onload = function() {
