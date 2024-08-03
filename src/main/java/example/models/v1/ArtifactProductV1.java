@@ -12,12 +12,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Include(rootLevel = false, name = "product", description = "Artifact product.", friendlyName = "ProductV1")
 @Table(name = "artifactproduct")
 @Entity
+@Data
 public class ArtifactProductV1 {
     @Id
     private String name = "";
