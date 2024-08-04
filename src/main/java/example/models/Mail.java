@@ -31,7 +31,7 @@ import lombok.Data;
  * 
  * @see example.datastore.OperationDataStore
  */
-@Include(name = "mail", description = "Mail.", friendlyName = "Mail")
+@Include(name = "mails", description = "Mail.", friendlyName = "Mail")
 @Data
 @CreatePermission(expression = AdminCheck.USER_IS_ADMIN)
 @ReadPermission(expression = Role.NONE_ROLE)
