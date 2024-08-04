@@ -8,8 +8,11 @@ package example.models.v1;
 import com.yahoo.elide.annotation.Include;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -22,11 +25,15 @@ import java.time.OffsetDateTime;
 @Data
 public class ArtifactVersionV1 {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "VERSION_SEQ")
+    @SequenceGenerator(name = "VERSION_SEQ", allocationSize = 1)
+    private Long id;
+
     private String name = "";
 
     @NotNull
     private OffsetDateTime createdOn = OffsetDateTime.now();
 
     @ManyToOne
-    private ArtifactProductV1 artifact;
+    private ArtifactProductV1 product;
 }
