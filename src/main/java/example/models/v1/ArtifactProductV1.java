@@ -8,9 +8,12 @@ package example.models.v1;
 import com.yahoo.elide.annotation.Include;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -23,6 +26,10 @@ import java.util.List;
 @Data
 public class ArtifactProductV1 {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCT_SEQ")
+    @SequenceGenerator(name = "PRODUCT_SEQ", allocationSize = 1)
+    private Long id;
+    
     private String name = "";
 
     private String commonName = "";
@@ -32,6 +39,6 @@ public class ArtifactProductV1 {
     @ManyToOne
     private ArtifactGroupV1 group = null;
 
-    @OneToMany(mappedBy = "artifact")
+    @OneToMany(mappedBy = "product")
     private List<ArtifactVersionV1> versions = new ArrayList<>();
 }

@@ -14,8 +14,11 @@ import com.yahoo.elide.graphql.subscriptions.annotations.SubscriptionField;
 import lombok.Data;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -31,6 +34,10 @@ import java.util.List;
 @Paginate(modes = { PaginationMode.CURSOR, PaginationMode.OFFSET })
 public class ArtifactGroup {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GROUP_SEQ")
+    @SequenceGenerator(name = "GROUP_SEQ", allocationSize = 1)
+    private Long id;
+    
     private String name = "";
 
     @SubscriptionField

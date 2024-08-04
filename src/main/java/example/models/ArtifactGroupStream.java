@@ -11,7 +11,10 @@ import com.yahoo.elide.annotation.UpdatePermission;
 import com.yahoo.elide.core.security.checks.prefab.Role;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 
 /**
@@ -37,7 +40,11 @@ import lombok.Data;
         """)
 public class ArtifactGroupStream {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GROUP_SEQ")
+    @SequenceGenerator(name = "GROUP_SEQ", allocationSize = 1)
     @Exclude
+    private Long id;
+
     private String name = "";
 
     private String commonName = "";

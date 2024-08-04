@@ -7,5 +7,5 @@ import example.models.ArtifactGroup;
 /**
  * {@link Repository} for {@link ArtifactGroup}.
  */
-public interface ArtifactGroupRepository extends QueryRepository<ArtifactGroup, String> {
+public interface ArtifactGroupRepository extends QueryRepository<ArtifactGroup, Long> {
 }
