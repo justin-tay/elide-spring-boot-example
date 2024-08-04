@@ -79,6 +79,8 @@ logging:
   file:
     path: /tmp
 springdoc:
+  api-docs:
+    version: openapi-3-1
   swagger-ui:
     tags-sorter: alpha
     csrf:

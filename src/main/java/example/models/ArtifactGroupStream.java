@@ -23,7 +23,7 @@ import lombok.Data;
  * Use page[last] to start scrolling from the end and page[before] and
  * page[size] to get previous records.
  */
-@Include(name = "groupStream", description = "Artifact group stream.", friendlyName = "Group Stream")
+@Include(name = "groupStreams", description = "Artifact group stream.", friendlyName = "Group Stream")
 @Data
 @CreatePermission(expression = Role.NONE_ROLE)
 @ReadPermission(expression = Role.ALL_ROLE)
