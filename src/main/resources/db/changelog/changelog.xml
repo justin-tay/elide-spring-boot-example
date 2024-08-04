@@ -6,7 +6,7 @@
        name varchar(255) NOT NULL,
        commonName varchar(255) DEFAULT NULL,
        description varchar(255) DEFAULT NULL,
-       createdOn timestamp NOT NULL,
+       createdOn timestamp with time zone NOT NULL,
        createdBy varchar(255) NOT NULL,
        PRIMARY KEY (name)
     );
@@ -22,7 +22,7 @@
 
     CREATE TABLE ArtifactVersion (
        name varchar(255) NOT NULL,
-       createdOn timestamp DEFAULT NULL,
+       createdOn timestamp with time zone NOT NULL,
        artifact_name varchar(255) DEFAULT NULL,
        PRIMARY KEY (name),
        FOREIGN KEY (artifact_name) REFERENCES ArtifactProduct(name)
@@ -65,7 +65,7 @@
        primary key (id)
     );
 
-    CREATE TABLE Downloads (
+    CREATE TABLE Download (
        group_id varchar(255) NOT NULL,
        product_id varchar(255) NOT NULL,
        date timestamp NOT NULL,
@@ -90,7 +90,9 @@
        ('elide-standalone','Standalone','A pre-configured, standalone Elide webservice','com.yahoo.elide');
 
     INSERT INTO ArtifactVersion (name, createdOn, artifact_name) VALUES
-       ('1.0.0','2015-10-19 00:00:00','elide-standalone'),
+       ('3.1.2','2017-09-21 00:00:00','elide-standalone'),
+       ('4.1.0','2018-03-20 00:00:00','elide-standalone'),
+       ('1.0.0','2015-10-19 00:00:00','elide-core'),
        ('2.0.0','2016-02-29 00:00:00','elide-core'),
        ('3.0.0','2017-03-06 00:00:00','elide-core'),
        ('4.0.0','2018-01-31 00:00:00','elide-core'),
@@ -98,7 +100,10 @@
        ('6.0.0','2021-11-03 00:00:00','elide-core'),
        ('7.0.0','2023-10-28 00:00:00','elide-core');
 
-    INSERT INTO Downloads (group_id, product_id, date, downloads) VALUES
+    INSERT INTO Download (group_id, product_id, date, downloads) VALUES
+            ('com.example.repository','elide-standalone','2020-01-01', 3),
+            ('com.example.repository','elide-standalone','2020-01-02', 6),
+            ('com.example.repository','elide-standalone','2020-01-03', 2),
             ('com.example.repository','elide-core','2020-01-01', 10),
             ('com.example.repository','elide-core','2020-01-02', 11),
             ('com.example.repository','elide-core','2020-01-03', 14);

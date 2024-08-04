@@ -23,7 +23,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Include(name = "group", description = "Artifact group.", friendlyName = "Group")
+@Include(name = "groups", description = "Artifact group.", friendlyName = "Group")
 @Table(name = "artifactgroup")
 @Entity
 @Subscription

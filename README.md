@@ -50,11 +50,11 @@ This allows exposing the operations through both JSON API and GraphQL.
 
 ##### JSON API
 
-`POST /mail`
+`POST /mails`
 ```json
 {
   "data": {
-    "type": "mail",
+    "type": "mails",
     "attributes": {
       "from": "thomas",
       "to": "henry",
@@ -68,7 +68,7 @@ This allows exposing the operations through both JSON API and GraphQL.
 
 ```graphql
 mutation {
-  mail(op: UPSERT, data: {from: "thomas", to: "henry", content: "Hello world"}) {
+  mails(op: UPSERT, data: {from: "thomas", to: "henry", content: "Hello world"}) {
     edges {
       node {
         id
@@ -92,7 +92,7 @@ Offset Pagination
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8080/api/groupPage?page%5Bsize%5D=2&page%5Btotals%5D=true' \
+  'http://localhost:8080/api/groupPages?page%5Bsize%5D=2&page%5Btotals%5D=true' \
   -H 'accept: application/vnd.api+json'
 ```
 
@@ -101,7 +101,7 @@ Cursor Pagination
 
 ```shell
 curl -X 'GET' \
-  'http://localhost:8080/api/groupStream?page%5Bfirst%5D=2&page%5Btotals%5D=true' \
+  'http://localhost:8080/api/groupStreams?page%5Bfirst%5D=2&page%5Btotals%5D=true' \
   -H 'accept: application/vnd.api+json'
 ```
 
@@ -114,7 +114,7 @@ As the pagination arguments in GraphQL for offset pagination and cursor paginati
 
 ```graphql
 query {
-  groupPage (first: 2 after: 0) {
+  groupPages (first: 2 after: 0) {
     edges {
       node {
         name
@@ -136,7 +136,7 @@ Cursor Pagination
 
 ```graphql
 query {
-  groupStream (first: 2) {
+  groupStreams (first: 2) {
     edges {
       node {
         name
@@ -153,11 +153,6 @@ query {
   }
 }
 ```
-
-
-
-
-
 ### OpenAPI
 
 Elide will only generate the OpenAPI document for the models that are defined in its `EntityDictionary`.
@@ -173,14 +168,6 @@ The sample configuration is in `OpenApiConfiguration` which takes into account E
     <version>${springdoc.version}</version>
 </dependency>
 ```
-
-### Native
-
-Elide supports being built into a GraalVM native image by supplying a feature, `yahoo.elide.core.graal.ElideFeature`, and its own native hints in it's libraries, ie. `native-image.properties`, `reflect-config.json` and `resource-config.json`.
-
-Further configuration is typically required, for instance to add project specific resources like `analytics/models/tables/artifactDownloads.hjson`, or for instance if the [GraalVM Reachability Metadata Repository](https://github.com/oracle/graalvm-reachability-metadata) does not contain updated metadata for newly released libraries.
-
-This project has configured additional hints using Spring Boot's `RuntimeHintsRegistrar` in `AppRuntimeHints`. This is configured on `App` using `@ImportRuntimeHints`.
 
 ### Security
 
@@ -213,6 +200,19 @@ A sample `UserCheck` is implemented in `AdminCheck` that just checks that the us
 
 ### ID Obfuscation
 
+It is common to use a numeric sequence as the primary key, however this may undesirably leak information.
+
+* The value of the IDs generated can be predicted
+* Potentially leaks the counts of items
+* Potentially leaks the relative times of creation between different records
+
+ However at the same time using a random value as the primary key may affect performance.
+
+Elide supports 2 different ways of not exposing the primary key of the entity.
+
+* Allows registering a `IdObfuscator` that can obfuscate the id. Typically an encryption algorithm is used.
+* Allows designating another field or property as the `@EntityId` that will be used to look up the record instead of the `@Id`.
+
 #### ID Obfuscator
 
 This project has a `Note` resource which uses a sequence as the primary key to demonstrate using a ID Obfuscator. This uses the `org.springframework.security.crypto.encrypt.AesBytesEncryptor`.
@@ -229,6 +229,14 @@ app:
 #### Entity ID
 
 This project has a `Post` resource which uses a sequence as the primary key to demonstrate using a Entity ID which stores a UUID.
+
+### Native
+
+Elide supports being built into a GraalVM native image by supplying a feature, `yahoo.elide.core.graal.ElideFeature`, and its own native hints in it's libraries, ie. `native-image.properties`, `reflect-config.json` and `resource-config.json`.
+
+Further configuration is typically required, for instance to add project specific resources like `analytics/models/tables/artifactDownloads.hjson`, or for instance if the [GraalVM Reachability Metadata Repository](https://github.com/oracle/graalvm-reachability-metadata) does not contain updated metadata for newly released libraries.
+
+This project has configured additional hints using Spring Boot's `RuntimeHintsRegistrar` in `AppRuntimeHints`. This is configured on `App` using `@ImportRuntimeHints`.
 
 ## Deploying
 
@@ -296,7 +304,7 @@ The following are sample queries.
 
 #### Mutation
 
-`POST /group/{groupId}/products/{productId}/versions`
+`POST /groups/{groupId}/products/{productId}/versions`
 
 |Variable      |Value
 |--------------|--------------------
@@ -306,10 +314,10 @@ The following are sample queries.
 ```json
 {
   "data": {
-  "type": "version",
+  "type": "versions",
   "id": "7.1.0",
   "attributes": {
-    "createdAt": "2007-12-03T10:15Z"
+    "createdOn": "2007-12-03T10:15Z"
     }
   }
 }
@@ -324,12 +332,12 @@ The following are sample queries.
   "atomic:operations": [
     {
       "op": "add",
-      "href": "/group/com.yahoo.elide/products/elide-core/versions",
+      "href": "/groups/com.yahoo.elide/products/elide-core/versions",
       "data": {
-        "type": "version",
+        "type": "versions",
         "id": "7.1.0",
         "attributes": {
-          "createdAt": "2007-12-03T10:15Z"
+          "createdOn": "2007-12-03T10:15Z"
         }
       }
     }
@@ -347,7 +355,7 @@ The following are sample queries.
     "type": "asyncQuery",
     "id": "ba31ca4e-ed8f-4be0-a0f3-12088fa9263d",
     "attributes": {
-      "query": "/group?sort=commonName&fields%5Bgroup%5D=commonName,description",
+      "query": "/groups?sort=commonName&fields%5Bgroups%5D=commonName,description",
       "queryType": "JSONAPI_V1_0",
       "status": "QUEUED"
     }
@@ -365,7 +373,7 @@ The following are sample queries.
     "type": "tableExport",
     "id": "ba31ca4e-ed8f-4be0-a0f3-12088fa9263f",
     "attributes": {
-      "query": "/group?sort=commonName&fields%5Bgroup%5D=commonName,description",
+      "query": "/groups?sort=commonName&fields%5Bgroups%5D=commonName,description",
       "queryType": "JSONAPI_V1_0",
       "status": "QUEUED",
       "resultType": "CSV"
@@ -381,7 +389,7 @@ The following are sample queries.
 
 ```graphql
 query QueryGroup {
-  group {
+  groups {
     edges {
       node {
         name
@@ -394,6 +402,7 @@ query QueryGroup {
                 edges {
                   node {
                     name
+                    createdOn
                   }
                 }
               }
@@ -410,9 +419,9 @@ query QueryGroup {
 
 ```graphql
 mutation UpsertGroup {
-  group(
+  groups(
     op: UPSERT
-    data: {name: "org.springframework.boot", description: "Spring Boot"}
+    data: {name: "org.hibernate.orm", description: "Hibernate"}
   ) {
     edges {
       node {
@@ -427,7 +436,7 @@ mutation UpsertGroup {
 
 ```graphql
 subscription OnAddGroup {
-  group (topic: ADDED) {
+  groups (topic: ADDED) {
     name
     description
   }
@@ -440,7 +449,7 @@ subscription OnAddGroup {
 mutation {
   asyncQuery(
     op: UPSERT
-    data: {id: "bb31ca4e-ed8f-4be0-a0f3-12088fb9263e", query: "{\"query\":\"{ group { edges { node { name } } } }\",\"variables\":null}", queryType: GRAPHQL_V1_0, status: QUEUED}
+    data: {id: "bb31ca4e-ed8f-4be0-a0f3-12088fb9263e", query: "{\"query\":\"{ groups { edges { node { name } } } }\",\"variables\":null}", queryType: GRAPHQL_V1_0, status: QUEUED}
   ) {
     edges {
       node {
@@ -467,7 +476,7 @@ mutation {
 mutation {
   tableExport(
     op: UPSERT
-    data: {id: "bb31ca4e-ed8f-4be0-a0f3-12088fb9263d", query: "{\"query\":\"{ group { edges { node { name } } } }\",\"variables\":null}", queryType: GRAPHQL_V1_0, resultType: "CSV", status: QUEUED}
+    data: {id: "bb31ca4e-ed8f-4be0-a0f3-12088fb9263d", query: "{\"query\":\"{ groups { edges { node { name } } } }\",\"variables\":null}", queryType: GRAPHQL_V1_0, resultType: "CSV", status: QUEUED}
   ) {
     edges {
       node {

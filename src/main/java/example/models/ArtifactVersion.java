@@ -15,7 +15,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.OffsetDateTime;
 
-@Include(rootLevel = false, name = "version", description = "Artifact version.", friendlyName = "Version")
+@Include(rootLevel = false, name = "versions", description = "Artifact version.", friendlyName = "Version")
 @Table(name = "artifactversion")
 @Entity
 public class ArtifactVersion {

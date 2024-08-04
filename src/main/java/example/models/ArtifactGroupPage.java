@@ -19,7 +19,7 @@ import lombok.Data;
  * <p>
  * Use page[number] and page[size] to get records.
  */
-@Include(name = "groupPage", description = "Artifact group page.", friendlyName = "Group Page")
+@Include(name = "groupPages", description = "Artifact group page.", friendlyName = "Group Page")
 @Data
 @CreatePermission(expression = Role.NONE_ROLE)
 @ReadPermission(expression = Role.ALL_ROLE)

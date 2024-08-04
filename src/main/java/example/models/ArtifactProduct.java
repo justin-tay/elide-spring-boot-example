@@ -17,7 +17,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-@Include(rootLevel = false, name = "product", description = "Artifact product.", friendlyName = "Product")
+@Include(rootLevel = false, name = "products", description = "Artifact product.", friendlyName = "Product")
 @Table(name = "artifactproduct")
 @Entity
 @Data

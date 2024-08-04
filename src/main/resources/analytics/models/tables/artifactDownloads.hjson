@@ -2,7 +2,7 @@
     tables: [
     {
         name: downloads
-        table: downloads
+        table: download
         friendlyName: Downloads
         description:
         '''
@@ -11,13 +11,13 @@
         joins: [
             {
                 name: artifactGroup
-                to: group
+                to: groups
                 kind: toOne
                 definition: '{{$group_id}} = {{artifactGroup.$name}}'
             },
             {
                 name: artifactProduct
-                to: product
+                to: products
                 kind: toOne
                 definition: '{{$product_id}} = {{artifactProduct.$name}}'
             }
