@@ -13,13 +13,13 @@
                 name: artifactGroup
                 to: groups
                 kind: toOne
-                definition: '{{$group_id}} = {{artifactGroup.$name}}'
+                definition: '{{$group_id}} = {{artifactGroup.$id}}'
             },
             {
                 name: artifactProduct
                 to: products
                 kind: toOne
-                definition: '{{$product_id}} = {{artifactProduct.$name}}'
+                definition: '{{$product_id}} = {{artifactProduct.$id}}'
             }
         ]
         dimensions: [
