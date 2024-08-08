@@ -16,6 +16,7 @@ import com.yahoo.elide.spring.security.obfuscation.BytesEncryptorIdObfuscator;
 
 import example.datastore.OperationDataStore;
 import example.datastore.SpringDataDataStore;
+import example.exception.TransactionExceptionMapper;
 import example.models.ArtifactGroupPage;
 import example.models.ArtifactGroupStream;
 import example.models.Mail;
@@ -94,5 +95,15 @@ public class ElideConfiguration {
         String salt = securityConfigProperties.getIdObfuscation().getSalt();
         AesBytesEncryptor bytesEncryptor = new AesBytesEncryptor(password, salt);
         return new BytesEncryptorIdObfuscator(bytesEncryptor);
+    }
+
+    /**
+     * Configures an exception mapper.
+     *
+     * @return the exception mapper
+     */
+    @Bean
+    TransactionExceptionMapper transactionExceptionMapper() {
+        return new TransactionExceptionMapper();
     }
 }
