@@ -4,8 +4,8 @@ import com.yahoo.elide.core.datastore.DataStore;
 import com.yahoo.elide.core.datastore.DataStoreTransaction;
 import com.yahoo.elide.core.dictionary.EntityDictionary;
 
-import example.services.SpringDataCursorEncoder;
-import example.services.QueryService;
+import example.service.QueryService;
+import example.service.SpringDataCursorEncoder;
 
 /**
  * {@link DataStore} for Spring Data that supports both Offset and Cursor Pagination.

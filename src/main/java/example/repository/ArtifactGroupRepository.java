@@ -1,8 +1,8 @@
-package example.repositories;
+package example.repository;
 
 import org.springframework.data.repository.Repository;
 
-import example.models.ArtifactGroup;
+import example.model.ArtifactGroup;
 
 /**
  * {@link Repository} for {@link ArtifactGroup}.

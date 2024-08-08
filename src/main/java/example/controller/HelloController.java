@@ -1,4 +1,4 @@
-package example.controllers;
+package example.controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
