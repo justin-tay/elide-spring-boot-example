@@ -1,4 +1,4 @@
-package example.models;
+package example.model;
 
 import com.yahoo.elide.annotation.CreatePermission;
 import com.yahoo.elide.annotation.DeletePermission;
@@ -20,19 +20,25 @@ import lombok.Data;
 /**
  * Artifact Group.
  * <p>
- * Use page[number] and page[size] to get records.
+ * Use page[first] to start scrolling from the start and page[after] and
+ * page[size] to get next records.
+ * <p>
+ * Use page[last] to start scrolling from the end and page[before] and
+ * page[size] to get previous records.
  */
-@Include(name = "groupPages", description = "Artifact group page.", friendlyName = "Group Page")
+@Include(name = "groupStreams", description = "Artifact group stream.", friendlyName = "Group Stream")
 @Data
 @CreatePermission(expression = Role.NONE_ROLE)
 @ReadPermission(expression = Role.ALL_ROLE)
 @UpdatePermission(expression = Role.NONE_ROLE)
 @DeletePermission(expression = Role.NONE_ROLE)
-@Paginate(modes = PaginationMode.OFFSET, countable = true)
+@Paginate(modes = PaginationMode.CURSOR, countable = true)
 @Schema(description = """
-        Use page[number] and page[size] to get records.
+        Use page[first] to start scrolling from the start and page[after] and page[size] to get next records.
+        
+        Use page[last] to start scrolling from the end and page[before] and page[size] to get previous records
         """)
-public class ArtifactGroupPage {
+public class ArtifactGroupStream {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GROUP_SEQ")
     @SequenceGenerator(name = "GROUP_SEQ", allocationSize = 1)

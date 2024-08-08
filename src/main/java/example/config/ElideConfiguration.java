@@ -17,13 +17,13 @@ import com.yahoo.elide.spring.security.obfuscation.BytesEncryptorIdObfuscator;
 import example.datastore.OperationDataStore;
 import example.datastore.SpringDataDataStore;
 import example.exception.TransactionExceptionMapper;
-import example.models.ArtifactGroupPage;
-import example.models.ArtifactGroupStream;
-import example.models.Mail;
-import example.repositories.ArtifactGroupRepository;
-import example.services.SpringDataCursorEncoder;
-import example.services.JacksonSpringDataCursorEncoder;
-import example.services.QueryService;
+import example.model.ArtifactGroupPage;
+import example.model.ArtifactGroupStream;
+import example.model.Mail;
+import example.repository.ArtifactGroupRepository;
+import example.service.JacksonSpringDataCursorEncoder;
+import example.service.QueryService;
+import example.service.SpringDataCursorEncoder;
 import jakarta.validation.Validator;
 
 /**

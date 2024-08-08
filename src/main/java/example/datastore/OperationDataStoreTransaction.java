@@ -18,7 +18,7 @@ import jakarta.validation.Validator;
  * This only performs validations on the models and hooks should be configured
  * on the models to perform operations.
  * 
- * @see example.models.Mail
+ * @see example.model.Mail
  */
 public class OperationDataStoreTransaction implements DataStoreTransaction {
     private final Validator validator;

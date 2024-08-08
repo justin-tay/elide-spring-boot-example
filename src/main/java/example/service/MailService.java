@@ -1,8 +1,8 @@
-package example.services;
+package example.service;
 
 import org.springframework.stereotype.Service;
 
-import example.models.Mail;
+import example.model.Mail;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  * <p>
  * This is injected into the LifeCycleHook for Mail.
  *
- * @see example.models.Mail
+ * @see example.model.Mail
  */
 @Service
 @Slf4j

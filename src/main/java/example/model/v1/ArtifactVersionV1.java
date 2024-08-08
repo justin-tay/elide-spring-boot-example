@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  * See LICENSE file in project root for terms.
  */
-package example.models;
+package example.model.v1;
 
 import com.yahoo.elide.annotation.Include;
 
@@ -19,11 +19,11 @@ import lombok.Data;
 
 import java.time.OffsetDateTime;
 
-@Include(rootLevel = false, name = "versions", description = "Artifact version.", friendlyName = "Version")
+@Include(rootLevel = false, name = "version", description = "Artifact version.", friendlyName = "VersionV1")
 @Table(name = "artifactversion")
 @Entity
 @Data
-public class ArtifactVersion {
+public class ArtifactVersionV1 {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "VERSION_SEQ")
     @SequenceGenerator(name = "VERSION_SEQ", allocationSize = 1)
@@ -35,5 +35,5 @@ public class ArtifactVersion {
     private OffsetDateTime createdOn = OffsetDateTime.now();
 
     @ManyToOne
-    private ArtifactProduct product;
+    private ArtifactProductV1 product;
 }

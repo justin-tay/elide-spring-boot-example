@@ -31,8 +31,8 @@ import com.yahoo.elide.core.request.Pagination.Direction;
 import com.yahoo.elide.core.request.Sorting;
 import com.yahoo.elide.core.request.Sorting.SortOrder;
 
-import example.services.SpringDataCursorEncoder;
-import example.services.QueryService;
+import example.service.QueryService;
+import example.service.SpringDataCursorEncoder;
 
 /**
  * {@link DataStoreTransaction} for the {@link SpringDataDataStore}.

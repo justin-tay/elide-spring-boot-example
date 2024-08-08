@@ -3,9 +3,11 @@
  * Licensed under the Apache License, Version 2.0
  * See LICENSE file in project root for terms.
  */
-package example.models.v1;
+package example.model;
 
 import com.yahoo.elide.annotation.Include;
+import com.yahoo.elide.annotation.Paginate;
+import com.yahoo.elide.annotation.PaginationMode;
 import com.yahoo.elide.graphql.subscriptions.annotations.Subscription;
 import com.yahoo.elide.graphql.subscriptions.annotations.SubscriptionField;
 
@@ -18,29 +20,40 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Include(name = "group", description = "Artifact group.", friendlyName = "GroupV1")
+@Include(name = "groups", description = "Artifact group.", friendlyName = "Group")
 @Table(name = "artifactgroup")
 @Entity
 @Subscription
 @Data
-public class ArtifactGroupV1 {
+@Paginate(modes = { PaginationMode.CURSOR, PaginationMode.OFFSET })
+public class ArtifactGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GROUP_SEQ")
     @SequenceGenerator(name = "GROUP_SEQ", allocationSize = 1)
     private Long id;
-
+    
     private String name = "";
 
     @SubscriptionField
+    @NotNull
     private String commonName = "";
 
     @SubscriptionField
     private String description = "";
 
+    @NotNull
+    private OffsetDateTime createdOn = OffsetDateTime.now();
+
+    @NotNull
+    private String createdBy = "user";
+
     @SubscriptionField
     @OneToMany(mappedBy = "group")
-    private List<ArtifactProductV1> products = new ArrayList<>();
+    private List<ArtifactProduct> products = new ArrayList<>();
 }

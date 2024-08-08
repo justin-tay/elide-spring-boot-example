@@ -1,4 +1,4 @@
-package example.security.checks;
+package example.security.check;
 
 import com.yahoo.elide.annotation.SecurityCheck;
 import com.yahoo.elide.core.security.User;
