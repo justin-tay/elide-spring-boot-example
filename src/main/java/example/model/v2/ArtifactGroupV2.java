@@ -4,7 +4,7 @@
  * See LICENSE file in project root for terms.
  */
 
-package example.models.v2;
+package example.model.v2;
 
 import com.yahoo.elide.annotation.Include;
 import com.yahoo.elide.graphql.subscriptions.annotations.Subscription;

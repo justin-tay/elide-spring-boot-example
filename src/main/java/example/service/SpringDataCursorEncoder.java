@@ -1,4 +1,4 @@
-package example.services;
+package example.service;
 
 import java.util.Map;
 

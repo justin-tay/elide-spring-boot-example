@@ -1,4 +1,4 @@
-package example.services;
+package example.service;
 
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  * <p>
  * This is for demonstration purposes only.
  *
- * @see example.repositories.QueryRepository
+ * @see example.repository.QueryRepository
  */
 @Slf4j
 public class QueryService {

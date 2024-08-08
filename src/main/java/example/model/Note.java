@@ -1,10 +1,8 @@
-package example.models;
+package example.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import com.yahoo.elide.annotation.EntityId;
 import com.yahoo.elide.annotation.Include;
 import com.yahoo.elide.annotation.Paginate;
 import com.yahoo.elide.annotation.PaginationMode;
@@ -19,32 +17,25 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * Discussion message posts.
+ * Notes.
  * <p>
- * This is used to demonstrate the use of {@link EntityId}.
+ * This is used to demonstrate the use of id obfuscation.
  */
-@Include(name = "posts", description = "Discussion message posts.", friendlyName = "Post")
-@Table(name = "post")
+@Include(name = "notes", description = "Notes.", friendlyName = "Note")
+@Table(name = "note")
 @Entity
 @Data
 @Paginate(modes = { PaginationMode.OFFSET, PaginationMode.CURSOR })
-public class Post {
+public class Note {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "POST_SEQ")
-    @SequenceGenerator(name = "POST_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "NOTE_SEQ")
+    @SequenceGenerator(name = "NOTE_SEQ", allocationSize = 1)
     private Long id;
-
-    @EntityId
-    @NotNull
-    @Column(name = "entity_id")
-    private String entityId;
 
     @Column(name = "title")
     private String title = "";
@@ -57,15 +48,8 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name="parent_id")
-    private Post parent;
+    private Note parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> replies = new ArrayList<>();
-
-    @PrePersist
-    void onCreate() {
-        if (this.entityId == null || this.entityId.length() != 36) {
-            this.entityId = UUID.randomUUID().toString();
-        }
-    }
+    private List<Note> replies = new ArrayList<>();
 }

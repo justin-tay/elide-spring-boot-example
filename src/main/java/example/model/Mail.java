@@ -1,4 +1,4 @@
-package example.models;
+package example.model;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -17,8 +17,8 @@ import com.yahoo.elide.core.security.RequestScope;
 import com.yahoo.elide.core.security.User;
 import com.yahoo.elide.core.security.checks.prefab.Role;
 
-import example.security.checks.AdminCheck;
-import example.services.MailService;
+import example.security.check.AdminCheck;
+import example.service.MailService;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
@@ -37,7 +37,7 @@ import lombok.Data;
 @ReadPermission(expression = Role.NONE_ROLE)
 @UpdatePermission(expression = Role.NONE_ROLE)
 @DeletePermission(expression = Role.NONE_ROLE)
-@LifeCycleHookBinding(operation = LifeCycleHookBinding.Operation.CREATE, phase = LifeCycleHookBinding.TransactionPhase.PRECOMMIT, hook = example.models.Mail.MailHook.class)
+@LifeCycleHookBinding(operation = LifeCycleHookBinding.Operation.CREATE, phase = LifeCycleHookBinding.TransactionPhase.PRECOMMIT, hook = example.model.Mail.MailHook.class)
 public class Mail {
     @Id
     @GeneratedValue
