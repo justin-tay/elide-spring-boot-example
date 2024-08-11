@@ -240,22 +240,18 @@ class SpecificationQueryVisitor implements FilterExpressionVisitor<Specification
                                 .map(Object::toString)
                                 .map(String::toLowerCase)
                                 .toList()));
-            case ISNULL:
-                return root.get(filterPredicate.getField()).isNull();
-            case NOTNULL:
-                return root.get(filterPredicate.getField()).isNotNull();
-            case PREFIX:
-                return builder.like(root.get(filterPredicate.getField()),
-                        filterPredicate.getValues().get(0).toString() + "%");
-            case NOT_PREFIX:
-                return builder.not(builder.like(root.get(filterPredicate.getField()),
-                        filterPredicate.getValues().get(0).toString() + "%"));
             case PREFIX_CASE_INSENSITIVE:
                 return builder.like(builder.lower(root.get(filterPredicate.getField())),
                         filterPredicate.getValues().get(0).toString().toLowerCase() + "%");
             case NOT_PREFIX_CASE_INSENSITIVE:
                 return builder.not(builder.like(builder.lower(root.get(filterPredicate.getField())),
                         filterPredicate.getValues().get(0).toString().toLowerCase() + "%"));
+            case PREFIX:
+                return builder.like(root.get(filterPredicate.getField()),
+                        filterPredicate.getValues().get(0).toString() + "%");
+            case NOT_PREFIX:
+                return builder.not(builder.like(root.get(filterPredicate.getField()),
+                        filterPredicate.getValues().get(0).toString() + "%"));
             case POSTFIX:
                 return builder.like(root.get(filterPredicate.getField()),
                         "%" + filterPredicate.getValues().get(0).toString());
@@ -280,6 +276,10 @@ class SpecificationQueryVisitor implements FilterExpressionVisitor<Specification
             case NOT_INFIX_CASE_INSENSITIVE:
                 return builder.not(builder.like(builder.lower(root.get(filterPredicate.getField())),
                         "%" + filterPredicate.getValues().get(0).toString().toLowerCase() + "%"));
+            case ISNULL:
+                return root.get(filterPredicate.getField()).isNull();
+            case NOTNULL:
+                return root.get(filterPredicate.getField()).isNotNull();
             case LT:
                 return builder.lt(root.get(filterPredicate.getField()),
                         new BigDecimal(filterPredicate.getValues().get(0).toString()));
