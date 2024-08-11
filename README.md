@@ -80,9 +80,9 @@ mutation {
 
 #### Integrating with other libraries
 
-The project demonstrates a custom `DataStore`, the `SpringDataDataStore`, that demonstrates how to integrate Elide with other libraries such as Spring Data.
+The project demonstrates a custom `DataStore`, the `SpringDataDataStore`, that demonstrates how to integrate Elide with other libraries such as Spring Data. This is registered in `ElideConfiguration` using a `DataStoreBuilderCustomizer`.
 
-This defines a `QueryRepository` interface that uses the `JpaSpecificationExecutor`. Implementations of `QueryRepository` such as `ArtifactGroupRepository` will then be registered to the `QueryService` which is used by the `SrpginDataDataStore` the retrieve data.
+This defines a `QueryRepository` interface that uses the `JpaSpecificationExecutor`. Implementations of `QueryRepository` such as `ArtifactGroupRepository` will then be registered to the `QueryService` which is used by the `SpringDataDataStore` the retrieve data.
 
 Two resources, the `ArtifactGroupPage` which exposes offset pagination, and the `ArtifactGroupStream` which exposes cursor pagination, are using the `SpringDataDataStore`.
 
@@ -168,6 +168,12 @@ The sample configuration is in `OpenApiConfiguration` which takes into account E
     <version>${springdoc.version}</version>
 </dependency>
 ```
+
+### Error Responses
+
+Error responses in Elide can be overridden by exposing a `ExceptionMapper` bean.
+
+This project comes with a `TransactionExceptionMapper` that will handle `org.hibernate.exception.ConstraintViolationException` that are raised when a database constraint has been violated.
 
 ### Security
 
