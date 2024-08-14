@@ -16,6 +16,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.OffsetDateTime;
 
@@ -35,5 +36,6 @@ public class ArtifactVersion {
     private OffsetDateTime createdOn = OffsetDateTime.now();
 
     @ManyToOne
+    @EqualsAndHashCode.Exclude
     private ArtifactProduct product;
 }
