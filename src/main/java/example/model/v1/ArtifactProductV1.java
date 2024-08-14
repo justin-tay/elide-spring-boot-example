@@ -16,6 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +38,10 @@ public class ArtifactProductV1 {
     private String description = "";
 
     @ManyToOne
+    @EqualsAndHashCode.Exclude
     private ArtifactGroupV1 group = null;
 
     @OneToMany(mappedBy = "product")
+    @EqualsAndHashCode.Exclude
     private List<ArtifactVersionV1> versions = new ArrayList<>();
 }

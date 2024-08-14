@@ -12,7 +12,7 @@ import com.yahoo.elide.graphql.subscriptions.annotations.Subscription;
 import com.yahoo.elide.graphql.subscriptions.annotations.SubscriptionField;
 
 import lombok.Data;
-
+import lombok.EqualsAndHashCode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -55,5 +55,6 @@ public class ArtifactGroup {
 
     @SubscriptionField
     @OneToMany(mappedBy = "group")
+    @EqualsAndHashCode.Exclude
     private List<ArtifactProduct> products = new ArrayList<>();
 }
