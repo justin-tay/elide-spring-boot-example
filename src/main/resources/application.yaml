@@ -53,6 +53,11 @@ spring:
     name: Elide
   profiles:
     active: local
+  graphql:
+    graphiql:
+      enabled: true
+    schema:
+      locations: classpath:graphql/
   jpa:
     show-sql: true
     properties:
