@@ -6,7 +6,7 @@
 
 app:
   security:
-    enabled: false
+    enabled: true
     origin: "*"
     id-obfuscation:
       enabled: true
@@ -55,6 +55,7 @@ spring:
     active: local
   jpa:
     show-sql: true
+    open-in-view: false
     properties:
       hibernate:
         '[default_batch_fetch_size]': 100

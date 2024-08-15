@@ -24,6 +24,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Discussion message posts.
@@ -56,14 +57,12 @@ public class Post {
     private String contentHtml = "";
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name="created_by")
-    private AppUser createdBy;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name="parent_id")
+    @EqualsAndHashCode.Exclude
     private Post parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
     private List<Post> replies = new ArrayList<>();
 
     @PrePersist
