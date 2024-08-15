@@ -31,6 +31,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import example.security.AppUserGrantedAuthority;
+
 /**
  * Security configuration.
  * <p>
@@ -82,10 +84,12 @@ public class SecurityConfiguration {
             UserDetails admin = User.withUsername("admin")
                     .password(passwordEncoder.encode("adminpass"))
                     .roles("ADMIN", "USER")
+                    .authorities(new AppUserGrantedAuthority(1L))
                     .build();
             UserDetails user = User.withUsername("user")
                     .password(passwordEncoder.encode("userpass"))
                     .roles("USER")
+                    .authorities(new AppUserGrantedAuthority(2L))
                     .build();
             return new InMemoryUserDetailsManager(admin, user);
         }

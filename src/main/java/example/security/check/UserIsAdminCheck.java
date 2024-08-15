@@ -9,13 +9,13 @@ import example.config.AppSecurityProperties;
 /**
  * {@link UserCheck} that the user has ROLE_ADMIN.
  */
-@SecurityCheck(AdminCheck.USER_IS_ADMIN)
-public class AdminCheck extends UserCheck {
+@SecurityCheck(UserIsAdminCheck.USER_IS_ADMIN)
+public class UserIsAdminCheck extends UserCheck {
     public static final String USER_IS_ADMIN = "User is Admin";
 
     private final AppSecurityProperties appSecurityProperties;
 
-    public AdminCheck(AppSecurityProperties appSecurityProperties) {
+    public UserIsAdminCheck(AppSecurityProperties appSecurityProperties) {
         this.appSecurityProperties = appSecurityProperties;
     }
 

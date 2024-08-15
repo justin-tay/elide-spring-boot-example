@@ -56,6 +56,10 @@ public class Post {
     private String contentHtml = "";
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name="created_by")
+    private AppUser createdBy;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name="parent_id")
     private Post parent;
 

@@ -17,7 +17,7 @@ import com.yahoo.elide.core.security.RequestScope;
 import com.yahoo.elide.core.security.User;
 import com.yahoo.elide.core.security.checks.prefab.Role;
 
-import example.security.check.AdminCheck;
+import example.security.check.UserIsAdminCheck;
 import example.service.MailService;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -33,7 +33,7 @@ import lombok.Data;
  */
 @Include(name = "mails", description = "Mail.", friendlyName = "Mail")
 @Data
-@CreatePermission(expression = AdminCheck.USER_IS_ADMIN)
+@CreatePermission(expression = UserIsAdminCheck.USER_IS_ADMIN)
 @ReadPermission(expression = Role.NONE_ROLE)
 @UpdatePermission(expression = Role.NONE_ROLE)
 @DeletePermission(expression = Role.NONE_ROLE)

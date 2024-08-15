@@ -82,7 +82,7 @@
     <changeSet author="admin" id="1539122270">
         <sql>
     CREATE SEQUENCE GROUP_SEQ START WITH 6;
-			
+
     INSERT INTO ArtifactGroup (id, name, commonName, description, createdOn, createdBy) VALUES
        (1,'com.example.repository','Example Repository','The code for this project', '2020-02-01 00:00:00', 'user'),
        (2,'com.yahoo.elide','Elide','The magical library powering this project', '2019-02-01 00:00:00', 'user'),
@@ -121,6 +121,18 @@
     </changeSet>
     <changeSet author="admin" id="1539122271">
         <sql>
+    CREATE SEQUENCE USER_SEQ START WITH 3;
+
+    CREATE TABLE AppUser (
+       id integer NOT NULL,
+       username varchar(255) NOT NULL,
+       name varchar(255) NOT NULL,
+       PRIMARY KEY (id)
+    );
+
+    INSERT INTO AppUser (id, username, name) VALUES (1, 'admin', 'Administrator');
+    INSERT INTO AppUser (id, username, name) VALUES (2, 'user', 'User');
+
     CREATE SEQUENCE POST_SEQ START WITH 6;
 
     CREATE TABLE Post (
@@ -129,17 +141,19 @@
        title varchar(255) NOT NULL,
        content varchar(255) NOT NULL,
        content_html varchar(255) NOT NULL,
+       created_by integer,
        parent_id integer,
        PRIMARY KEY (id),
        FOREIGN KEY (parent_id) REFERENCES Post(id),
+       FOREIGN KEY (created_by) REFERENCES AppUser(id),
        UNIQUE (entity_id)
     );
 
-    INSERT INTO Post (id, entity_id, title, content, content_html) VALUES (1, '9b2f710d-9046-4f8c-95ee-1a3884d6d136', 'Getting Started', 'So You Want An API?', 'So You Want An API?');
-    INSERT INTO Post (id, entity_id, title, content, content_html) VALUES (2, '31b129a7-d3e8-494d-b368-cc4aa901eb81', 'Features', 'Common API Features', 'Common API Features');
-    INSERT INTO Post (id, entity_id, title, content, content_html) VALUES (3, 'f8174b67-6dc4-42a2-9e5e-c8295561f47a', 'Data Models', 'Elide generates its API entirely based on the concept of data models.', 'Elide generates its API entirely based on the concept of data models.');
-    INSERT INTO Post (id, entity_id, title, content, content_html) VALUES (4, '8066f23e-e28e-4e4f-8a32-b65f2b57ff98', 'Security', 'Core Concepts', 'Core Concepts');
-    INSERT INTO Post (id, entity_id, title, content, content_html) VALUES (5, '6328658e-43f2-4a2e-9c79-35324a0140ed', 'Analytic Query Support', 'Elide includes a semantic modeling layer and analytic query API for OLAP style queries against your database.', 'Elide includes a semantic modeling layer and analytic query API for OLAP style queries against your database.');
+    INSERT INTO Post (id, entity_id, title, content, content_html, created_by) VALUES (1, '9b2f710d-9046-4f8c-95ee-1a3884d6d136', 'Getting Started', 'So You Want An API?', 'So You Want An API?', 2);
+    INSERT INTO Post (id, entity_id, title, content, content_html, created_by) VALUES (2, '31b129a7-d3e8-494d-b368-cc4aa901eb81', 'Features', 'Common API Features', 'Common API Features', 2);
+    INSERT INTO Post (id, entity_id, title, content, content_html, created_by) VALUES (3, 'f8174b67-6dc4-42a2-9e5e-c8295561f47a', 'Data Models', 'Elide generates its API entirely based on the concept of data models.', 'Elide generates its API entirely based on the concept of data models.', 2);
+    INSERT INTO Post (id, entity_id, title, content, content_html, created_by) VALUES (4, '8066f23e-e28e-4e4f-8a32-b65f2b57ff98', 'Security', 'Core Concepts', 'Core Concepts', 1);
+    INSERT INTO Post (id, entity_id, title, content, content_html, created_by) VALUES (5, '6328658e-43f2-4a2e-9c79-35324a0140ed', 'Analytic Query Support', 'Elide includes a semantic modeling layer and analytic query API for OLAP style queries against your database.', 'Elide includes a semantic modeling layer and analytic query API for OLAP style queries against your database.', 1);
 
     CREATE SEQUENCE NOTE_SEQ START WITH 6;
 
@@ -148,16 +162,18 @@
        title varchar(255) NOT NULL,
        content varchar(255) NOT NULL,
        content_html varchar(255) NOT NULL,
+       created_by integer,
        parent_id integer,
        PRIMARY KEY (id),
+       FOREIGN KEY (created_by) REFERENCES AppUser(id),
        FOREIGN KEY (parent_id) REFERENCES Note(id)
     );
 
-    INSERT INTO Note (id, title, content, content_html) VALUES (1, 'Getting Started', 'So You Want An API?', 'So You Want An API?');
-    INSERT INTO Note (id, title, content, content_html) VALUES (2, 'Features', 'Common API Features', 'Common API Features');
-    INSERT INTO Note (id, title, content, content_html) VALUES (3, 'Data Models', 'Elide generates its API entirely based on the concept of data models.', 'Elide generates its API entirely based on the concept of data models.');
-    INSERT INTO Note (id, title, content, content_html) VALUES (4, 'Security', 'Core Concepts', 'Core Concepts');
-    INSERT INTO Note (id, title, content, content_html) VALUES (5, 'Analytic Query Support', 'Elide includes a semantic modeling layer and analytic query API for OLAP style queries against your database.', 'Elide includes a semantic modeling layer and analytic query API for OLAP style queries against your database.');
+    INSERT INTO Note (id, title, content, content_html, created_by) VALUES (1, 'Getting Started', 'So You Want An API?', 'So You Want An API?', 2);
+    INSERT INTO Note (id, title, content, content_html, created_by) VALUES (2, 'Features', 'Common API Features', 'Common API Features', 2);
+    INSERT INTO Note (id, title, content, content_html, created_by) VALUES (3, 'Data Models', 'Elide generates its API entirely based on the concept of data models.', 'Elide generates its API entirely based on the concept of data models.', 2);
+    INSERT INTO Note (id, title, content, content_html, created_by) VALUES (4, 'Security', 'Core Concepts', 'Core Concepts', 1);
+    INSERT INTO Note (id, title, content, content_html, created_by) VALUES (5, 'Analytic Query Support', 'Elide includes a semantic modeling layer and analytic query API for OLAP style queries against your database.', 'Elide includes a semantic modeling layer and analytic query API for OLAP style queries against your database.', 1);
         </sql>
     </changeSet>
     
