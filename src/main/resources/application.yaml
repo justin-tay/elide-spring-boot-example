@@ -46,6 +46,9 @@ elide:
       enabled: true
       path: analytics
 spring:
+  devtools:
+    restart:
+      enabled: false
   cloud:
     refresh:
       enabled: false
