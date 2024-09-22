@@ -49,19 +49,19 @@ public class ExampleTest extends IntegrationTest {
      */
     @Test
     @Sql(statements = {
-            "DELETE FROM Downloads; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;",
+            "DELETE FROM Download; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;",
             "INSERT INTO ArtifactGroup (name, commonName, description) VALUES\n" +
                     "\t\t('com.example.repository','Example Repository','The code for this project');"
     })
     void jsonApiGetTest() {
         when()
-            .get("/api/group")
+            .get("/api/groups")
             .then()
             .log().all()
             .body(equalTo(
                 data(
                     resource(
-                        type( "group"),
+                        type( "groups"),
                         id("com.example.repository"),
                         attributes(
                             attr("commonName", "Example Repository"),
@@ -79,7 +79,7 @@ public class ExampleTest extends IntegrationTest {
 
     @Test
     @Sql(statements = {
-            "DELETE FROM Downloads; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;",
+            "DELETE FROM Download; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;",
             "INSERT INTO ArtifactGroup (name, commonName, description) VALUES\n" +
                     "\t\t('com.example.repository','Example Repository','The code for this project');"
     })
@@ -89,7 +89,7 @@ public class ExampleTest extends IntegrationTest {
             .body(
                 datum(
                     resource(
-                        type("group"),
+                        type("groups"),
                         id("com.example.repository"),
                         attributes(
                             attr("commonName", "Changed It.")
@@ -98,18 +98,18 @@ public class ExampleTest extends IntegrationTest {
                 )
             )
             .when()
-                .patch("/api/group/com.example.repository")
+                .patch("/api/groups/com.example.repository")
             .then()
                 .statusCode(HttpStatus.SC_NO_CONTENT);
 
         when()
-                .get("/api/group")
+                .get("/api/groups")
                 .then()
                 .log().all()
                 .body(equalTo(
                         data(
                                 resource(
-                                        type( "group"),
+                                        type( "groups"),
                                         id("com.example.repository"),
                                         attributes(
                                                 attr("commonName", "Changed It."),
@@ -127,7 +127,7 @@ public class ExampleTest extends IntegrationTest {
 
     @Test
     @Sql(statements = {
-            "DELETE FROM Downloads; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;"
+            "DELETE FROM Download; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;"
     })
     void jsonApiPostTest() {
         given()
@@ -135,7 +135,7 @@ public class ExampleTest extends IntegrationTest {
                 .body(
                         datum(
                                 resource(
-                                        type("group"),
+                                        type("groups"),
                                         id("com.example.repository"),
                                         attributes(
                                                 attr("commonName", "New group.")
@@ -144,11 +144,11 @@ public class ExampleTest extends IntegrationTest {
                         )
                 )
                 .when()
-                .post("/api/group")
+                .post("/api/groups")
                 .then()
                 .body(equalTo(datum(
                         resource(
-                                type("group"),
+                                type("groups"),
                                 id("com.example.repository"),
                                 attributes(
                                         attr("commonName", "New group."),
@@ -164,7 +164,7 @@ public class ExampleTest extends IntegrationTest {
 
     @Test
     @Sql(statements = {
-            "DELETE FROM Downloads; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;",
+            "DELETE FROM Download; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;",
             "INSERT INTO ArtifactGroup (name, commonName, description) VALUES\n" +
                     "\t\t('com.example.repository','Example Repository','The code for this project');"
     })
@@ -177,7 +177,7 @@ public class ExampleTest extends IntegrationTest {
 
     @Test
     @Sql(statements = {
-            "DELETE FROM Downloads; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;",
+            "DELETE FROM Download; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;",
             "INSERT INTO ArtifactGroup (name, commonName, description) VALUES\n" +
                     "\t\t('com.example.repository','Example Repository','The code for this project');",
             "INSERT INTO ArtifactProduct (name, commonName, description, group_name) VALUES\n" +
@@ -190,7 +190,7 @@ public class ExampleTest extends IntegrationTest {
                 linkage(type("product"), id("foo"))
             ))
         .when()
-                .delete("/api/group/com.example.repository")
+                .delete("/api/groups/com.example.repository")
                 .then()
                 .statusCode(HttpStatus.SC_NO_CONTENT);
     }
@@ -200,7 +200,7 @@ public class ExampleTest extends IntegrationTest {
      */
     @Test
     @Sql(statements = {
-            "DELETE FROM Downloads; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;",
+            "DELETE FROM Download; DELETE FROM ArtifactVersion; DELETE FROM ArtifactProduct; DELETE FROM ArtifactGroup;",
             "INSERT INTO ArtifactGroup (name, commonName, description) VALUES\n" +
                     "\t\t('com.example.repository','Example Repository','The code for this project');",
             "INSERT INTO ArtifactGroup (name, commonName, description) VALUES\n" +
@@ -213,7 +213,7 @@ public class ExampleTest extends IntegrationTest {
             .body("{ \"query\" : \"" + GraphQLDSL.document(
                 query(
                     selection(
-                        field("group",
+                        field("groups",
                             selections(
                                 field("name"),
                                 field("commonName"),
@@ -230,7 +230,7 @@ public class ExampleTest extends IntegrationTest {
             .body(equalTo(GraphQLDSL.document(
                 selection(
                     field(
-                        "group",
+                        "groups",
                         selections(
                             field("name", "com.example.repository"),
                             field( "commonName", "Example Repository"),
@@ -252,7 +252,7 @@ public class ExampleTest extends IntegrationTest {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
 
         SubscriptionWebSocketTestClient client = new SubscriptionWebSocketTestClient(1,
-                List.of("subscription {group(topic: ADDED) {name}}"));
+                List.of("subscription {groups(topic: ADDED) {name}}"));
 
         try (Session session = container.connectToServer(client, new URI("ws://localhost:" + port + "/subscription"))) {
 
@@ -265,13 +265,13 @@ public class ExampleTest extends IntegrationTest {
                     .body(
                             data(
                                     resource(
-                                            type("group"),
+                                            type("groups"),
                                             id("foo"),
                                             attributes(attr("description", "bar"))
                                     )
                             )
                     )
-                    .post("/api/group")
+                    .post("/api/groups")
                     .then().statusCode(org.apache.http.HttpStatus.SC_CREATED).body("data.id", equalTo("foo"));
 
 
@@ -299,7 +299,7 @@ public class ExampleTest extends IntegrationTest {
     public void testDownloadAPI() throws Exception {
         given()
                 .when()
-                .get("/api/downloads?fields[downloads]=downloads,group,product")
+                .get("/api/downloads?fields[downloads]=downloads,groups,products")
                 .then()
                 .statusCode(200);
     }
