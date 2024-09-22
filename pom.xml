@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
+        <version>3.3.4</version>
     </parent>
 
     <properties>
@@ -25,12 +25,12 @@
         <jar.finalName>elide-spring-boot</jar.finalName>
         <java.version>17</java.version>
 
-        <elide.version>7.1.1-SNAPSHOT</elide.version>
+        <elide.version>7.1.2</elide.version>
 
         <springdoc.version>2.6.0</springdoc.version>
-        <logback-access-spring-boot-starter.version>4.2.2</logback-access-spring-boot-starter.version>
+        <logback-access-spring-boot-starter.version>4.3.0</logback-access-spring-boot-starter.version>
 
-        <maven-surefire-plugin.version>3.3.1</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
     </properties>
 
     <dependencyManagement>
