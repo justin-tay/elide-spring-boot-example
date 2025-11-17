@@ -2,6 +2,20 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet author="admin" id="1539122071">
         <sql>
+    CREATE TABLE Decision (
+       id integer NOT NULL AUTO_INCREMENT,
+       type varchar(255) DEFAULT NULL,
+       outcome varchar(255) DEFAULT NULL,
+       PRIMARY KEY (id)
+    );
+    CREATE TABLE Legal (
+       id integer NOT NULL AUTO_INCREMENT,
+       name varchar(255) NOT NULL,
+       decision_id integer NOT NULL,
+       PRIMARY KEY (id),
+       FOREIGN KEY (decision_id) REFERENCES Decision(id)
+    );
+			
     CREATE TABLE ArtifactGroup (
        id integer NOT NULL,
        name varchar(255) NOT NULL,

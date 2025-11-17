@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.hibernate.annotations.IdGeneratorType;
+
 import com.yahoo.elide.annotation.EntityId;
 import com.yahoo.elide.annotation.Include;
 import com.yahoo.elide.annotation.Paginate;
@@ -37,8 +39,9 @@ import lombok.Data;
 @Paginate(modes = { PaginationMode.OFFSET, PaginationMode.CURSOR })
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "POST_SEQ")
-    @SequenceGenerator(name = "POST_SEQ", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "POST_SEQ")
+//    @SequenceGenerator(name = "POST_SEQ", allocationSize = 1)
+    @SnowflakeId
     private Long id;
 
     @EntityId
